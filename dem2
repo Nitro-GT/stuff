@@ -117,7 +117,7 @@ local ids = {
 normalmode = "rbxassetid://9048378262",
 demoralizedmode = "rbxassetid://1837843587",
 demoralizationmode = "rbxassetid://1837111398",
-starmode = "rbxassetid://15693138306"}
+starmode = "rbxassetid://1842612601"}
 
 local modecolors = {
 normalcolors = {color1 = "Sea green",color2 = "Camo",neoncolor ="White"},
