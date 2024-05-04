@@ -117,7 +117,7 @@ local ids = {
 normalmode = "rbxassetid://9048378262",
 demoralizedmode = "rbxassetid://1837843587",
 demoralizationmode = "rbxassetid://1837111398",
-starmode = "getcustomasset(".."star.mp3"..")"}
+starmode = getcustomasset("star.mp3")}
 
 local modecolors = {
 normalcolors = {color1 = "Sea green",color2 = "Camo",neoncolor ="White"},
