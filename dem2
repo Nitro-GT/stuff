@@ -114,10 +114,10 @@ local anim = "idle"
 local mode = "Normal"
 --
 local ids = {
-normalmode = "rbxassetid://149820574",
-demoralizedmode = "rbxassetid://1561410944",
+normalmode = "rbxassetid://9048378262",
+demoralizedmode = "rbxassetid://1837843587",
 demoralizationmode = "rbxassetid://1837111398",
-starmode = "rbxassetid://436405140"}
+starmode = "rbxassetid://15693138306"}
 
 local modecolors = {
 normalcolors = {color1 = "Sea green",color2 = "Camo",neoncolor ="White"},
