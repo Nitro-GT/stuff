@@ -1,0 +1,2516 @@
+
+--[[
+I had a good friend who i gave it as a birthday present..
+But he betrayed me and decided to give it to a person who i hated most..
+
+Enjoy,skids!
+]]
+--Demoralized
+--Made by //vlad20020//
+--Prints
+print("Demoralized")
+print("Made by vlad20020")
+print("v Controls v")
+warn(
+    [[ 
+Click - Punch
+Q - Switch Mode
+X - TP
+R - Plasma Shard
+T - Taunt(Demoralized/DEMORALIZATION mode)
+N - Spec Attack
+F - Plasma Beam
+E - Sky Strike
+M - Mute Music]])
+print(
+	[[Modes:
+Normal
+Demoralized
+DEMORALIZATION
+Star]])
+--Services
+local plrs = game:GetService("Players")
+local tweens = game:GetService("TweenService")
+local debrs = game:GetService("Debris")
+local runservice = game:GetService("RunService")
+ 
+--Variables
+local plr = game.Players.LocalPlayer
+local char = plr.Character
+local h = char.Head
+local t = char.Torso
+local ra = char["Right Arm"]
+local la = char["Left Arm"]
+local rl = char["Right Leg"]
+local ll = char["Left Leg"]
+local rut = char.HumanoidRootPart
+local hum = char:FindFirstChildOfClass("Humanoid")
+local nec = t.Neck
+local rutj = rut.RootJoint
+local rs = t["Right Shoulder"]
+local ls = t["Left Shoulder"]
+local rh = t["Right Hip"]
+local lh = t["Left Hip"]
+local cf1 = nec.C1
+local cf2 = rutj.C1
+local cf3 = rs.C1
+local cf4 = ls.C1
+local cf5 = rh.C1
+local cf6 = lh.C1
+local cf01 = nec.C0
+local cf02 = rutj.C0
+local cf03 = rs.C0
+local cf04 = ls.C0
+local cf05 = rh.C0
+local cf06 = lh.C0
+local p0,p1 = nec.Part0,nec.Part1
+local rsp0,rsp1 = rs.Part0,rs.Part1
+local lsp0,lsp1 = ls.Part0,ls.Part1
+local rhp0,rhp1 = rh.Part0,rh.Part1
+local lhp0,lhp1 = lh.Part0,lh.Part1
+local phit
+local wristband
+local bandhandle
+ 
+--Bools
+local using = false
+local landed = false
+local readytoland = false
+local cangrabthecorner = false
+local grabbedc = false
+local roaring = false
+local superattackcooldown1 = false
+local superattackcooldown2 = false
+local superattackcooldown3 = false
+local superattackcooldown4 = false
+local lookinaround = false
+local deafen = false
+ 
+--Values/Strings/Tables
+--
+local aa = 10
+local aaa = aa*3
+local change = 0
+local lchange = 0
+local sine = 1
+local animspeed = .005
+local animspeed1 = 1.5
+local walkanimspeed = .1
+local walkspeed = 16
+local sumthin = walkspeed/8
+local idlenum = 0
+local lsvol = 4
+local currentpunch = 1
+local timepos = 0
+local idlenum = 0
+local lchange = 0
+local vol = .75
+local jp = 50
+local whenbored = math.random(3,6)
+local maxhealthuntilinstakill = 100000
+--
+local songid = "rbxassetid://149820574"
+local anim = "idle"
+local mode = "Normal"
+--
+local ids = {
+normalmode = "rbxassetid://149820574",
+demoralizedmode = "rbxassetid://1561410944",
+demoralizationmode = "rbxassetid://1837111398",
+starmode = "rbxassetid://436405140"}
+
+local modecolors = {
+normalcolors = {color1 = "Sea green",color2 = "Camo",neoncolor ="White"},
+demoralizedcolors = {color1 = "Black",color2 = "Really black",neoncolor ="Maroon"},
+demoralizationcolors = {color1 = "Really red",color2 = "Cocoa",neoncolor ="Maroon"},
+starcolors = {color1 = "Cool yellow",color2 = "Deep orange",neoncolor ="CGA brown"}
+}	
+
+--Tweening styles and directions
+local directions = {In = Enum.EasingDirection.In,
+    Out = Enum.EasingDirection.Out,
+    InOut = Enum.EasingDirection.InOut
+}
+local styles = {Linear = Enum.EasingStyle.Linear,
+    Back = Enum.EasingStyle.Back,
+    Bounce = Enum.EasingStyle.Bounce,
+    Sine = Enum.EasingStyle.Sine,
+    Quad = Enum.EasingStyle.Quad,
+    Elastic = Enum.EasingStyle.Elastic,
+    Quart = Enum.EasingStyle.Quart,
+    Quint = Enum.EasingStyle.Quint
+}
+ 
+--BasicFunctions
+local ins = Instance.new
+local v3 = Vector3.new
+local cf = CFrame.new
+local angles = CFrame.Angles
+local rad = math.rad
+local huge = math.huge
+local cos = math.cos
+local sin = math.sin
+local tan = math.tan
+local ray = Ray.new
+local random = math.random
+local ud = UDim.new
+local ud2 = UDim2.new
+local c3 = Color3.new
+local rgb = Color3.fromRGB
+local bc = BrickColor.new
+ 
+--CFrames
+cf5 = cf5 * CFrame.Angles(rad(2),rad(0),rad(0))
+cf6 = cf6 * CFrame.Angles(rad(2),rad(0),rad(0))
+cff5 = cf5 * CFrame.Angles(rad(2),rad(3),rad(0))
+cff6 = cf6 * CFrame.Angles(rad(2),rad(-3),rad(0))
+ 
+--Stopping animations
+for i,v in pairs(hum:GetPlayingAnimationTracks()) do
+    v:Stop()
+end
+if char:FindFirstChild("Animate") then
+char.Animate:Destroy()
+end
+if hum:FindFirstChildOfClass("Animator") then
+char.Humanoid.Animator:Destroy()
+end
+
+ 
+--Model
+--Converted with ttyyuu12345's model to script plugin v4
+function sandbox(var,func)
+    local env = getfenv(func)
+    local newenv = setmetatable({},{
+        __index = function(self,k)
+            if k=="script" then
+                return var
+            else
+                return env[k]
+            end
+        end,
+    })
+    setfenv(func,newenv)
+    return func
+end
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting"))
+Model0 = Instance.new("Model")
+Part1 = Instance.new("Part")
+Part2 = Instance.new("Part")
+SpecialMesh3 = Instance.new("SpecialMesh")
+Part4 = Instance.new("Part")
+Part5 = Instance.new("Part")
+Part6 = Instance.new("Part")
+Part7 = Instance.new("Part")
+Part8 = Instance.new("Part")
+Part9 = Instance.new("Part")
+WeldConstraint10 = Instance.new("WeldConstraint")
+WeldConstraint11 = Instance.new("WeldConstraint")
+WeldConstraint12 = Instance.new("WeldConstraint")
+WeldConstraint13 = Instance.new("WeldConstraint")
+WeldConstraint14 = Instance.new("WeldConstraint")
+WeldConstraint15 = Instance.new("WeldConstraint")
+WeldConstraint16 = Instance.new("Motor6D")
+Model0.Name = "Wristband"
+Model0.Parent = mas
+Model0.PrimaryPart = Part9
+Part1.Name = "LighterPart"
+Part1.Parent = Model0
+Part1.CFrame = CFrame.new(104.866997, 26.2399998, -119.177498, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+Part1.Orientation = Vector3.new(0, 90, 0)
+Part1.Position = Vector3.new(104.866997, 26.2399998, -119.177498)
+Part1.Rotation = Vector3.new(0, 90, 0)
+Part1.Color = Color3.new(0.203922, 0.556863, 0.25098)
+Part1.Size = Vector3.new(0.075000003, 0.649999976, 0.649999976)
+Part1.BottomSurface = Enum.SurfaceType.Smooth
+Part1.BrickColor = BrickColor.new("Sea green")
+Part1.CanCollide = false
+Part1.Material = Enum.Material.SmoothPlastic
+Part1.TopSurface = Enum.SurfaceType.Smooth
+Part1.brickColor = BrickColor.new("Sea green")
+Part1.Shape = Enum.PartType.Cylinder
+Part2.Name = "Sign"
+Part2.Parent = Model0
+Part2.CFrame = CFrame.new(104.866997, 26.2399998, -119.177002, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+Part2.Orientation = Vector3.new(0, 180, 0)
+Part2.Position = Vector3.new(104.866997, 26.2399998, -119.177002)
+Part2.Rotation = Vector3.new(-180, 0, -180)
+Part2.Size = Vector3.new(0.0500000007, 0.0500000007, 0.0500000007)
+Part2.BottomSurface = Enum.SurfaceType.Smooth
+Part2.CanCollide = false
+Part2.TopSurface = Enum.SurfaceType.Smooth
+SpecialMesh3.Parent = Part2
+SpecialMesh3.MeshId = "rbxassetid://443493147"
+SpecialMesh3.Offset = Vector3.new(0, 0, 0.0350000001)
+SpecialMesh3.Scale = Vector3.new(0.00749999983, 0.00749999983, 0.00100000005)
+SpecialMesh3.MeshType = Enum.MeshType.FileMesh
+Part4.Name = "DarkerPart"
+Part4.Parent = Model0
+Part4.CFrame = CFrame.new(104.866997, 26.2399998, -119.164993, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+Part4.Orientation = Vector3.new(0, 90, 0)
+Part4.Position = Vector3.new(104.866997, 26.2399998, -119.164993)
+Part4.Rotation = Vector3.new(0, 90, 0)
+Part4.Color = Color3.new(0.227451, 0.490196, 0.0823529)
+Part4.Size = Vector3.new(0.0500000007, 0.699999988, 0.699999988)
+Part4.BottomSurface = Enum.SurfaceType.Smooth
+Part4.BrickColor = BrickColor.new("Camo")
+Part4.CanCollide = false
+Part4.Material = Enum.Material.SmoothPlastic
+Part4.TopSurface = Enum.SurfaceType.Smooth
+Part4.brickColor = BrickColor.new("Camo")
+Part4.Shape = Enum.PartType.Cylinder
+Part5.Name = "DarkerPart"
+Part5.Parent = Model0
+Part5.CFrame = CFrame.new(104.862, 26.2400093, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part5.Position = Vector3.new(104.862, 26.2400093, -118.660004)
+Part5.Color = Color3.new(0.227451, 0.490196, 0.0823529)
+Part5.Size = Vector3.new(1.05999994, 0.100000001, 1.05999994)
+Part5.BottomSurface = Enum.SurfaceType.Smooth
+Part5.BrickColor = BrickColor.new("Camo")
+Part5.CanCollide = false
+Part5.Material = Enum.Material.SmoothPlastic
+Part5.TopSurface = Enum.SurfaceType.Smooth
+Part5.brickColor = BrickColor.new("Camo")
+Part6.Name = "NeonPart"
+Part6.Parent = Model0
+Part6.CFrame = CFrame.new(104.862, 26.3150082, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part6.Position = Vector3.new(104.862, 26.3150082, -118.660004)
+Part6.Color = Color3.new(0.905882, 0.905882, 0.92549)
+Part6.Size = Vector3.new(1.05999994, 0.0500000007, 1.05999994)
+Part6.BottomSurface = Enum.SurfaceType.Smooth
+Part6.BrickColor = BrickColor.new("Pearl")
+Part6.CanCollide = false
+Part6.Material = Enum.Material.Neon
+Part6.TopSurface = Enum.SurfaceType.Smooth
+Part6.brickColor = BrickColor.new("Pearl")
+Part7.Name = "NeonPart"
+Part7.Parent = Model0
+Part7.CFrame = CFrame.new(104.862, 26.1650105, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part7.Position = Vector3.new(104.862, 26.1650105, -118.660004)
+Part7.Color = Color3.new(0.905882, 0.905882, 0.92549)
+Part7.Size = Vector3.new(1.05999994, 0.0500000007, 1.05999994)
+Part7.BottomSurface = Enum.SurfaceType.Smooth
+Part7.BrickColor = BrickColor.new("Pearl")
+Part7.CanCollide = false
+Part7.Material = Enum.Material.Neon
+Part7.TopSurface = Enum.SurfaceType.Smooth
+Part7.brickColor = BrickColor.new("Pearl")
+Part8.Name = "LighterPart"
+Part8.Parent = Model0
+Part8.CFrame = CFrame.new(104.862, 26.2400093, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part8.Position = Vector3.new(104.862, 26.2400093, -118.660004)
+Part8.Color = Color3.new(0.203922, 0.556863, 0.25098)
+Part8.Size = Vector3.new(1.04999995, 0.299999833, 1.04999995)
+Part8.BottomSurface = Enum.SurfaceType.Smooth
+Part8.BrickColor = BrickColor.new("Sea green")
+Part8.CanCollide = false
+Part8.Material = Enum.Material.SmoothPlastic
+Part8.TopSurface = Enum.SurfaceType.Smooth
+Part8.brickColor = BrickColor.new("Sea green")
+Part9.Name = "FakeArm"
+Part9.Parent = Model0
+Part9.CFrame = CFrame.new(104.862312, 26.8397083, -118.660202, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part9.Position = Vector3.new(104.862312, 26.8397083, -118.660202)
+Part9.Transparency = 1
+Part9.Size = Vector3.new(1, 2, 1)
+Part9.BottomSurface = Enum.SurfaceType.Smooth
+Part9.CanCollide = false
+Part9.TopSurface = Enum.SurfaceType.Smooth
+WeldConstraint10.Parent = Part9
+WeldConstraint10.Part0 = Part9
+WeldConstraint10.Part1 = Part8
+WeldConstraint11.Parent = Part9
+WeldConstraint11.Part0 = Part9
+WeldConstraint11.Part1 = Part5
+WeldConstraint12.Parent = Part9
+WeldConstraint12.Part0 = Part9
+WeldConstraint12.Part1 = Part6
+WeldConstraint13.Parent = Part9
+WeldConstraint13.Part0 = Part9
+WeldConstraint13.Part1 = Part7
+WeldConstraint14.Parent = Part9
+WeldConstraint14.Part0 = Part9
+WeldConstraint14.Part1 = Part4
+WeldConstraint15.Parent = Part9
+WeldConstraint15.Part0 = Part9
+WeldConstraint15.Part1 = Part1
+WeldConstraint16.Parent = Part9
+WeldConstraint16.Part0 = Part1
+WeldConstraint16.Part1 = Part2
+Part1.Transparency = 1
+Part2.Transparency = 1
+Part4.Transparency = 1
+for i,v in pairs(mas:GetChildren()) do
+    v.Parent = workspace
+    pcall(function() v:MakeJoints() end)
+end
+mas:Destroy()
+for i,v in pairs(cors) do
+    spawn(function()
+        pcall(v)
+    end)
+end
+function reviveband()
+function sandbox(var,func)
+    local env = getfenv(func)
+    local newenv = setmetatable({},{
+        __index = function(self,k)
+            if k=="script" then
+                return var
+            else
+                return env[k]
+            end
+        end,
+    })
+    setfenv(func,newenv)
+    return func
+end
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting"))
+Model0 = Instance.new("Model")
+Part1 = Instance.new("Part")
+Part2 = Instance.new("Part")
+SpecialMesh3 = Instance.new("SpecialMesh")
+Part4 = Instance.new("Part")
+Part5 = Instance.new("Part")
+Part6 = Instance.new("Part")
+Part7 = Instance.new("Part")
+Part8 = Instance.new("Part")
+Part9 = Instance.new("Part")
+WeldConstraint10 = Instance.new("WeldConstraint")
+WeldConstraint11 = Instance.new("WeldConstraint")
+WeldConstraint12 = Instance.new("WeldConstraint")
+WeldConstraint13 = Instance.new("WeldConstraint")
+WeldConstraint14 = Instance.new("WeldConstraint")
+WeldConstraint15 = Instance.new("WeldConstraint")
+WeldConstraint16 = Instance.new("Motor6D")
+Model0.Name = "Wristband"
+Model0.Parent = mas
+Model0.PrimaryPart = Part9
+Part1.Name = "LighterPart"
+Part1.Parent = Model0
+Part1.CFrame = CFrame.new(104.866997, 26.2399998, -119.177498, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+Part1.Orientation = Vector3.new(0, 90, 0)
+Part1.Position = Vector3.new(104.866997, 26.2399998, -119.177498)
+Part1.Rotation = Vector3.new(0, 90, 0)
+Part1.Color = Color3.new(0.203922, 0.556863, 0.25098)
+Part1.Size = Vector3.new(0.075000003, 0.649999976, 0.649999976)
+Part1.BottomSurface = Enum.SurfaceType.Smooth
+Part1.BrickColor = BrickColor.new("Sea green")
+Part1.CanCollide = false
+Part1.Material = Enum.Material.SmoothPlastic
+Part1.TopSurface = Enum.SurfaceType.Smooth
+Part1.brickColor = BrickColor.new("Sea green")
+Part1.Shape = Enum.PartType.Cylinder
+Part2.Name = "Sign"
+Part2.Parent = Model0
+Part2.CFrame = CFrame.new(104.866997, 26.2399998, -119.177002, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+Part2.Orientation = Vector3.new(0, 180, 0)
+Part2.Position = Vector3.new(104.866997, 26.2399998, -119.177002)
+Part2.Rotation = Vector3.new(-180, 0, -180)
+Part2.Size = Vector3.new(0.0500000007, 0.0500000007, 0.0500000007)
+Part2.BottomSurface = Enum.SurfaceType.Smooth
+Part2.CanCollide = false
+Part2.TopSurface = Enum.SurfaceType.Smooth
+SpecialMesh3.Parent = Part2
+SpecialMesh3.MeshId = "rbxassetid://443493147"
+SpecialMesh3.Offset = Vector3.new(0, 0, 0.0350000001)
+SpecialMesh3.Scale = Vector3.new(0.00749999983, 0.00749999983, 0.00100000005)
+SpecialMesh3.MeshType = Enum.MeshType.FileMesh
+Part4.Name = "DarkerPart"
+Part4.Parent = Model0
+Part4.CFrame = CFrame.new(104.866997, 26.2399998, -119.164993, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+Part4.Orientation = Vector3.new(0, 90, 0)
+Part4.Position = Vector3.new(104.866997, 26.2399998, -119.164993)
+Part4.Rotation = Vector3.new(0, 90, 0)
+Part4.Color = Color3.new(0.227451, 0.490196, 0.0823529)
+Part4.Size = Vector3.new(0.0500000007, 0.699999988, 0.699999988)
+Part4.BottomSurface = Enum.SurfaceType.Smooth
+Part4.BrickColor = BrickColor.new("Camo")
+Part4.CanCollide = false
+Part4.Material = Enum.Material.SmoothPlastic
+Part4.TopSurface = Enum.SurfaceType.Smooth
+Part4.brickColor = BrickColor.new("Camo")
+Part4.Shape = Enum.PartType.Cylinder
+Part5.Name = "DarkerPart"
+Part5.Parent = Model0
+Part5.CFrame = CFrame.new(104.862, 26.2400093, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part5.Position = Vector3.new(104.862, 26.2400093, -118.660004)
+Part5.Color = Color3.new(0.227451, 0.490196, 0.0823529)
+Part5.Size = Vector3.new(1.05999994, 0.100000001, 1.05999994)
+Part5.BottomSurface = Enum.SurfaceType.Smooth
+Part5.BrickColor = BrickColor.new("Camo")
+Part5.CanCollide = false
+Part5.Material = Enum.Material.SmoothPlastic
+Part5.TopSurface = Enum.SurfaceType.Smooth
+Part5.brickColor = BrickColor.new("Camo")
+Part6.Name = "NeonPart"
+Part6.Parent = Model0
+Part6.CFrame = CFrame.new(104.862, 26.3150082, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part6.Position = Vector3.new(104.862, 26.3150082, -118.660004)
+Part6.Color = Color3.new(0.905882, 0.905882, 0.92549)
+Part6.Size = Vector3.new(1.05999994, 0.0500000007, 1.05999994)
+Part6.BottomSurface = Enum.SurfaceType.Smooth
+Part6.BrickColor = BrickColor.new("Pearl")
+Part6.CanCollide = false
+Part6.Material = Enum.Material.Neon
+Part6.TopSurface = Enum.SurfaceType.Smooth
+Part6.brickColor = BrickColor.new("Pearl")
+Part7.Name = "NeonPart"
+Part7.Parent = Model0
+Part7.CFrame = CFrame.new(104.862, 26.1650105, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part7.Position = Vector3.new(104.862, 26.1650105, -118.660004)
+Part7.Color = Color3.new(0.905882, 0.905882, 0.92549)
+Part7.Size = Vector3.new(1.05999994, 0.0500000007, 1.05999994)
+Part7.BottomSurface = Enum.SurfaceType.Smooth
+Part7.BrickColor = BrickColor.new("Pearl")
+Part7.CanCollide = false
+Part7.Material = Enum.Material.Neon
+Part7.TopSurface = Enum.SurfaceType.Smooth
+Part7.brickColor = BrickColor.new("Pearl")
+Part8.Name = "LighterPart"
+Part8.Parent = Model0
+Part8.CFrame = CFrame.new(104.862, 26.2400093, -118.660004, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part8.Position = Vector3.new(104.862, 26.2400093, -118.660004)
+Part8.Color = Color3.new(0.203922, 0.556863, 0.25098)
+Part8.Size = Vector3.new(1.04999995, 0.299999833, 1.04999995)
+Part8.BottomSurface = Enum.SurfaceType.Smooth
+Part8.BrickColor = BrickColor.new("Sea green")
+Part8.CanCollide = false
+Part8.Material = Enum.Material.SmoothPlastic
+Part8.TopSurface = Enum.SurfaceType.Smooth
+Part8.brickColor = BrickColor.new("Sea green")
+Part9.Name = "FakeArm"
+Part9.Parent = Model0
+Part9.CFrame = CFrame.new(104.862312, 26.8397083, -118.660202, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+Part9.Position = Vector3.new(104.862312, 26.8397083, -118.660202)
+Part9.Transparency = 1
+Part9.Size = Vector3.new(1, 2, 1)
+Part9.BottomSurface = Enum.SurfaceType.Smooth
+Part9.CanCollide = false
+Part9.TopSurface = Enum.SurfaceType.Smooth
+WeldConstraint10.Parent = Part9
+WeldConstraint10.Part0 = Part9
+WeldConstraint10.Part1 = Part8
+WeldConstraint11.Parent = Part9
+WeldConstraint11.Part0 = Part9
+WeldConstraint11.Part1 = Part5
+WeldConstraint12.Parent = Part9
+WeldConstraint12.Part0 = Part9
+WeldConstraint12.Part1 = Part6
+WeldConstraint13.Parent = Part9
+WeldConstraint13.Part0 = Part9
+WeldConstraint13.Part1 = Part7
+WeldConstraint14.Parent = Part9
+WeldConstraint14.Part0 = Part9
+WeldConstraint14.Part1 = Part4
+WeldConstraint15.Parent = Part9
+WeldConstraint15.Part0 = Part9
+WeldConstraint15.Part1 = Part1
+WeldConstraint16.Parent = Part9
+WeldConstraint16.Part0 = Part1
+WeldConstraint16.Part1 = Part2
+Part1.Transparency = 1
+Part2.Transparency = 1
+Part4.Transparency = 1
+for i,v in pairs(mas:GetChildren()) do
+    v.Parent = workspace
+    pcall(function() v:MakeJoints() end)
+end
+mas:Destroy()
+for i,v in pairs(cors) do
+    spawn(function()
+        pcall(v)
+    end)
+end
+wristband = Model0
+bandhandle = Part5
+wristband.Parent = char
+end
+local signweld = WeldConstraint16
+wristband = Model0
+bandhandle = Part5
+wristband.Parent = char
+local weld = ins("Motor6D",ra)
+weld.Part0 = ra
+weld.Part1 = wristband.PrimaryPart
+weld.C0 = angles(rad(0),rad(-90),rad(0))
+local effpart = Instance.new("Part")
+effpart.Size = Vector3.new(2,.1,1)
+effpart.Massless = true
+effpart.Transparency = 1
+effpart.CanCollide = false
+effpart.Anchored = false
+effpart.Parent = char
+local grabpart = Instance.new("Part")
+grabpart.Size = Vector3.new(.001,.001,.001)
+grabpart.Massless = true
+grabpart.Transparency = 1
+grabpart.CanCollide = false
+grabpart.Anchored = false
+grabpart.Material = "Neon"
+grabpart.Parent = char
+local pweld = Instance.new("Motor6D",effpart)
+pweld.Part0 = t
+pweld.Part1 = effpart
+pweld.C0 = CFrame.new(0,-2.2,-.5)
+local gweld = Instance.new("Motor6D",grabpart)
+gweld.Part0 = rut
+gweld.Part1 = grabpart
+gweld.C0 = CFrame.new(0,3,-1.4)
+local lsound = Instance.new("Sound",effpart)
+lsound.Volume = lsvol
+lsound.SoundId = "rbxassetid://1161221108"
+local effects = ins("Model",char)
+effects.Name = "Effects"
+local music = ins("Sound",t)
+music.Volume = vol
+music.SoundId = songid
+music.Looped = true
+music.EmitterSize = 35
+music:Play()
+local ff = ins("ForceField",char)
+ff.Visible = false
+local roar = ins("Sound",rut)
+roar.Volume = 5
+roar.SoundId = "rbxassetid://2631687985"
+roar.EmitterSize = 100
+local roar2 = ins("Sound",rut)
+roar2.Volume = 5
+roar2.SoundId = "rbxassetid://2631687985"
+roar2.EmitterSize = 100
+local billboard = ins("BillboardGui",h)
+billboard.Adornee = h
+billboard.Size = ud2(2,0,1,0)
+billboard.StudsOffset = v3(0,2,0)
+billboard.AlwaysOnTop = true
+billboard.MaxDistance = 15
+local text = ins("TextBox",billboard)
+text.BackgroundTransparency = 1
+text.TextStrokeTransparency = 0
+text.Size = ud2(1,0,1,0)
+text.TextScaled = true
+text.TextColor = Part4.BrickColor
+text.TextStrokeColor3 = Part1.BrickColor.Color
+text.Text = mode
+local billboard2 = ins("BillboardGui",h)
+billboard2.Adornee = h
+billboard2.Size = ud2(1.5,0,.75,0)
+billboard2.StudsOffset = v3(0,1.5,0)
+billboard2.AlwaysOnTop = true
+billboard2.MaxDistance = 15
+local text2 = ins("TextBox",billboard2)
+text2.BackgroundTransparency = 1
+text2.TextStrokeTransparency = 0
+text2.Size = ud2(1,0,1,0)
+text2.TextScaled = true
+text2.TextColor = bc("Smoky grey")
+text2.TextStrokeColor3 = bc("Fossil").Color
+text2.Text = "<Demoralized>"
+local raw = ins("WeldConstraint",rut)
+raw.Part1 = rl
+local law = ins("WeldConstraint",rut)
+law.Part1 = ll
+ 
+--Functions
+function swait()
+    runservice.Stepped:Wait()
+end
+function remove(instance,time)
+    debrs:AddItem(instance,time)
+end
+function removedescendantsof(parent,type,descendants)
+    if type == "isa" then
+        for i,v in pairs(parent:GetDescendants()) do
+            if v:IsA(descendants) then
+                v:Destroy()
+            end
+        end
+        elseif type == "name" then
+        for i,v in pairs(parent:GetDescendants()) do
+            if v.Name == descendants then
+                v:Destroy()
+            end
+        end
+    end
+    end
+function turnto(to)
+    rut.CFrame = cf(rut.Position,v3(to.x,rut.Position.y,to.z))
+end
+function sound(id,vol,pitch,parent)
+    pcall(function()
+        local newsound = Instance.new("Sound",parent)
+        newsound.Volume = vol
+        newsound.SoundId = "rbxassetid://"..id
+        newsound.Pitch = pitch
+        newsound:Play()
+        coroutine.resume(coroutine.create(function()
+            wait(.1)
+            remove(newsound,newsound.TimeLength/newsound.Pitch)
+        end))
+        return newsound
+    end)
+end
+function rayc(spos,direc,ignore,dist)
+    local rai = ray(spos,direc.Unit * dist)
+    local rhit,rpos,rrot = workspace:FindPartOnRayWithIgnoreList(rai,ignore,false,false)
+    return rhit,rpos,rrot
+end
+local tlerp = function(part,tablee,leinght,easingstyle,easingdirec)
+    local info = TweenInfo.new(
+    leinght,
+    easingstyle,
+    easingdirec,
+    0,
+    false,
+    0
+    )
+    local lerp = tweens:Create(part,info,tablee)
+    lerp:Play()
+end
+function removewithfade(part,timebeforefade,randc)
+pcall(function()
+    coroutine.resume(coroutine.create(function()
+        wait(timebeforefade)
+        part:BreakJoints()
+        part.Name = "JustGoingAwayOk?"
+        part.Parent = effects
+        for i = 1,25 do
+            if randc then
+                part.BrickColor = BrickColor.Random()
+            end
+            part.Transparency = part.Transparency +.04
+            wait()
+        end
+        part:Destroy()
+    end))
+end)
+end
+function fadewithfly(part,color,randc)
+pcall(function()
+    part:ClearAllChildren()
+    part.CanCollide = false
+    part.Anchored = false
+    part.Massless = true
+    part.Locked = false
+    part.Archivable = true
+    part.Material = "Neon"
+    part.BrickColor = BrickColor.new(color)
+    local vel = Instance.new("BodyVelocity")
+    vel.MaxForce = v3(huge,huge,huge)
+    vel.P = 10000
+    vel.Velocity = v3(math.random(-3,3),math.random(1,3),math.random(-3,3))
+    local avel = Instance.new("BodyAngularVelocity")
+    avel.MaxTorque = v3(huge,huge,huge)
+    avel.AngularVelocity = v3(math.random(-2,2),math.random(-2,2),math.random(-2,2))
+    avel.Parent = part
+    vel.Parent = part
+    if randc then
+        removewithfade(part,0,true)
+    else
+        removewithfade(part,0,false)
+    end
+end)
+end
+function sphereefx(pos,ssize,osize,colour,time)
+    local sphere = ins("Part")
+    sphere.Anchored = true
+    sphere.CanCollide = false
+    sphere.Material = "Neon"
+    sphere.CFrame = pos
+    sphere.Size = v3(.1,.1,.1)
+    sphere.BrickColor = bc(tostring(colour))
+    sphere.Parent = effects
+    local spheremesh = ins("SpecialMesh",sphere)
+    spheremesh.MeshType = "Sphere"
+    spheremesh.Scale = v3(ssize,ssize,ssize)*10
+    tlerp(spheremesh,{Scale = v3(osize,osize,osize)*10},time,styles.Quad,directions.In)
+    tlerp(sphere,{Transparency = 1},time,styles.Quad,directions.In)
+    remove(sphere,time)
+    return sphere
+end
+function changecolors(speed,maincolor,secondcolor,neoncolor)
+    for i,v in pairs(wristband:GetChildren()) do
+        if v.Name == "LighterPart" and maincolor ~= nil then
+            tlerp(v,{Color = BrickColor.new(tostring(maincolor)).Color},speed,styles.Linear,directions.In)
+			tlerp(text,{TextColor3 = BrickColor.new(tostring(maincolor)).Color},speed,styles.Linear,directions.In)
+        end
+        if v.Name == "DarkerPart" and secondcolor ~= nil then
+            tlerp(v,{Color = BrickColor.new(tostring(secondcolor)).Color},speed,styles.Linear,directions.In)
+			tlerp(text,{TextStrokeColor3 = BrickColor.new(tostring(secondcolor)).Color},speed,styles.Linear,directions.In)
+        end
+        if v.Name == "NeonPart" and neoncolor ~= nil then
+            tlerp(v,{Color = BrickColor.new(tostring(neoncolor)).Color},speed,styles.Linear,directions.In)
+        end
+    end
+end
+function fire(partp,parent,color1,color2,ssize,osize,leinght,material,minr,maxr,shape,spread,st,ot,onlyraise,followchar)
+    local part = Instance.new("Part",parent) part.Size = Vector3.new(ssize,ssize,ssize) part.Transparency = st part.CanCollide = false part.Anchored = true part.Shape = shape part.Material = material part.BrickColor = BrickColor.new(color1) part.CFrame = partp.CFrame * CFrame.new(partp.Size.x/math.random(-20,20),partp.Size.y/math.random(-20,20),partp.Size.z/math.random(-20,20))
+    if followchar then
+		onlyraise = false
+		part.CFrame = CFrame.new(part.Position,rut.Position) * angles(rad(-90),rad(0),rad(0))
+	end
+	if onlyraise == true then
+        part.CFrame = CFrame.new(part.CFrame.p,Vector3.new(nil,part.CFrame.y,part.CFrame.z))
+    end
+    local pcf = part.CFrame
+    tlerp(part,{CFrame = pcf * CFrame.new(math.random(-spread,spread)/math.random(2,4),math.random(minr,maxr),math.random(-spread,spread)/math.random(2,4)) * CFrame.Angles(rad(math.random(-180,180)),rad(math.random(-180,180)),rad(math.random(-180,180))),Size = Vector3.new(osize,osize,osize),Color = BrickColor.new(color2).Color,Transparency = ot},leinght,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut)
+    game:GetService("Debris"):AddItem(part,leinght)
+end
+function wedgefire(partp,parent,color1,color2,ssize,osize,leinght,material,minr,maxr,spread,st,ot,onlyraise,followchar)
+    local part = Instance.new("WedgePart",parent) part.Size = Vector3.new(.1,ssize,ssize) part.Transparency = st part.CanCollide = false part.Anchored = true part.Material = material part.BrickColor = BrickColor.new(color1) part.CFrame = partp.CFrame * CFrame.new(partp.Size.x/math.random(-20,20),partp.Size.y/math.random(-20,20),partp.Size.z/math.random(-20,20))
+    if followchar then
+		onlyraise = false
+		part.CFrame = CFrame.new(part.Position,rut.Position) * angles(rad(-90),rad(0),rad(0))
+	end
+	if onlyraise == true then
+        part.CFrame = CFrame.new(part.CFrame.p,Vector3.new(nil,part.CFrame.y,part.CFrame.z))
+    end
+    local pcf = part.CFrame
+    tlerp(part,{CFrame = pcf * CFrame.new(math.random(-spread,spread)/math.random(2,4),math.random(minr,maxr),math.random(-spread,spread)/math.random(2,4)) * CFrame.Angles(rad(math.random(-180,180)),rad(math.random(-180,180)),rad(math.random(-180,180))),Size = Vector3.new(.1,osize,osize),Color = BrickColor.new(color2).Color,Transparency = ot},leinght,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut)
+    game:GetService("Debris"):AddItem(part,leinght)
+end
+function damagingfire(partp,parent,color1,color2,ssize,osize,leinght,material,minr,maxr,shape,spread,st,ot,onlyraise,damage)
+    local deb = false
+    local part = Instance.new("Part",parent) part.Size = Vector3.new(ssize,ssize,ssize) part.Transparency = st part.CanCollide = false part.Anchored = true part.Shape = shape part.Material = material part.BrickColor = BrickColor.new(color1) part.CFrame = partp.CFrame * CFrame.new(partp.Size.x/math.random(-20,20),partp.Size.y/math.random(-20,20),partp.Size.z/math.random(-20,20))
+    if onlyraise == true then
+        part.CFrame = CFrame.new(part.CFrame.p,Vector3.new(nil,part.CFrame.y,part.CFrame.z))
+    end
+    part.Touched:Connect(function(hit)
+        if not deb then
+            local newhum = hit.Parent:FindFirstChildOfClass("Humanoid")
+            if newhum and newhum ~= hum then
+                deb = true
+                if newhum.Health >maxhealthuntilinstakill then
+                  
+                    showdamage(part.CFrame,"Too much health...",1)
+                    return
+                end
+                local rand = random(1,10)
+                if rand == 8 then
+                    lesserfirepart(hit)
+                end
+                newhum.Health = newhum.Health 
+                if newhum.Health <.01 then
+                    death(newhum.Parent,part.BrickColor)
+                    return
+                end
+                showdamage(part.CFrame,"-"..damage,.1)
+            end
+        end
+    end)
+    local pcf = part.CFrame
+    tlerp(part,{CFrame = pcf * CFrame.new(math.random(-spread,spread)/math.random(2,4),math.random(minr,maxr),math.random(-spread,spread)/math.random(2,4)) * CFrame.Angles(rad(math.random(-180,180)),rad(math.random(-180,180)),rad(math.random(-180,180))),Size = Vector3.new(osize,osize,osize),Color = BrickColor.new(color2).Color,Transparency = ot},leinght,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut)
+    game:GetService("Debris"):AddItem(part,leinght)
+end
+function partray(from,to,colour,wideness,time)
+    pcall(function()
+		local antime = time or .25
+        local raypart = ins("Part")
+        raypart.Anchored = true
+        raypart.CanCollide = false
+        raypart.Material = "Neon"
+        raypart.BrickColor = bc(tostring(colour))
+        raypart.CFrame = from
+        local dista = (from.p-to).Magnitude
+        raypart.CFrame = cf(raypart.Position,to) * cf(0,0,-dista/2) * angles(rad(0),rad(0),rad(math.random(-180,180)))
+        raypart.Size = v3(wideness,wideness,dista)
+        raypart.Parent = effects
+        local endcf = raypart.CFrame * cf(0,0,-raypart.Size.z/2)
+        coroutine.resume(coroutine.create(function()
+            tlerp(raypart,{Size = v3(.1,.1,raypart.Size.z/10),Transparency = 1,CFrame = endcf},antime,styles.Quad,directions.In)
+            remove(raypart,antime)
+        end))
+    end)
+end
+function knockback(part,force,timeb)
+    local vel = ins("BodyVelocity",part)
+    vel.MaxForce = v3(huge,huge,huge)
+    vel.Velocity = rut.CFrame.LookVector * force
+    remove(vel,timeb)
+end
+function showdamage(pos,text,timebeforefade)
+    local dpart = ins("Part")
+    dpart.Anchored = true
+    dpart.CanCollide = false
+    dpart.Size = v3(.01,.01,.01)
+    dpart.Transparency = 1
+    dpart.CFrame = pos
+    dpart.Parent = effects
+    dpart.CFrame = cf(dpart.Position,v3(nil,dpart.Position.y,dpart.Position.z))
+    local bil = ins("BillboardGui",dpart)
+    bil.Size = ud2(2,0,2,0)
+    bil.AlwaysOnTop = true
+    local label = ins("TextBox",bil)
+    label.Size = ud2(1,0,1,0)
+    label.Text = text
+    label.BackgroundTransparency = 1
+    label.TextScaled = true
+    label.TextColor3 = Part4.Color
+    coroutine.resume(coroutine.create(function()
+        tlerp(dpart,{CFrame = dpart.CFrame * cf(random(-1,1),random(-1,1),random(-1,1))},.5,styles.Back,directions.Out)
+        wait(timebeforefade)
+        tlerp(label,{TextTransparency = 1},.5,styles.Back,directions.Out)
+        remove(dpart,.5)
+    end))
+end
+
+function firepart(parttofire)
+    coroutine.resume(coroutine.create(function()
+        for i = 1,random(20,30) do
+            if not parttofire or not parttofire.Parent then
+                break
+            end
+            parttofire.BrickColor = Part4.BrickColor
+            if mode == "Normal" then
+                damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,false,random(2,5))
+            elseif mode == "Demoralized" then
+            if parttofire.Size.x >2 then
+                    damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),parttofire.Size.x/5,parttofire.Size.x/15,math.random(6,10)/12,"Neon",parttofire.Size.x/5,parttofire.Size.x/1.5,"Block",3,.2,1,false,random(5,8))
+            else
+                damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,false,random(5,8))
+            end
+            elseif mode == "DEMORALIZATION" then
+			damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),parttofire.Size.x/5,parttofire.Size.x/15,math.random(6,10)/12,"Neon",parttofire.Size.x/5,parttofire.Size.x/1.5,"Block",3,.75,1,false,random(40,99))
+		elseif mode == "Star" then
+			damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,false,random(3,6))
+		end
+            wait(.15)
+            end
+            if parttofire.Name == "Impact" or parttofire.Name == "Shard" then
+                tlerp(parttofire,{Size = v3(.1,.1,.1),Transparency = 1},.1,styles.Quad,directions.In)
+                remove(parttofire,.1)
+            end
+    end))
+    end
+function lesserfirepart(parttofire)
+    coroutine.resume(coroutine.create(function()
+        for i = 1,random(6,12) do
+            if not parttofire or not parttofire.Parent then
+                break
+            end
+            if parttofire.Name == "Impact" then
+                parttofire.BrickColor = Part4.BrickColor
+            end
+            if mode == "Normal" then
+                damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,true,random(2,5))
+            elseif mode == "Demoralized" then
+                damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,true,random(5,8))
+		  elseif mode == "DEMORALIZATION" then
+                damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.75,1,true,random(40,99))
+		elseif mode == "Star" then
+			damagingfire(parttofire,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/5,math.random(3,6)/5,math.random(6,10)/12,"Neon",2,6,"Block",3,.2,1,false,random(3,6))
+            end
+            wait(.25)
+            end
+            if parttofire.Name == "Impact" then
+                tlerp(parttofire,{Size = v3(.1,.1,.1),Transparency = 1},.1,styles.Quad,directions.In)
+                remove(parttofire,.1)
+            end
+    end))
+end
+function placefirepart(pos,size)
+    local part = ins("Part")
+    part.Anchored = true
+    part.CanCollide = false
+    part.Transparency = .4
+    part.Material = "Neon"
+    part.Name = "Impact"
+    part.CFrame = pos
+    part.Size = v3(.1,.1,.1)
+    tlerp(part,{Size = v3(size,.1,size)},.1,styles.Quad,directions.In)
+    part.Parent = effects
+    local mesh = ins("CylinderMesh",part)
+    local vol = 7
+    local amo = 1
+    if mode == "Demoralized" then
+        vol = 10
+        amo = 3
+	elseif mode == "DEMORALIZATION" then
+		 vol = 10
+        amo = 5
+    end
+    coroutine.resume(coroutine.create(function()
+        pcall(function()
+            if size < 50 then
+                sound(539294959,vol,1,part)
+            else
+                for i = 1,amo do
+                    sound(142885319,vol or 10,.4,char)
+                end
+                part.Transparency = .7
+            end
+        end)
+        local sphere = sphereefx(part.CFrame,size/6,size*2,tostring(Part4.BrickColor),.25)
+        for i = 1,4 do
+            fire(part,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/(35-size*2.5),math.random(3,6)/(35-size*20),math.random(6,10)/20,"Neon",-size*1.5,size*1.5,"Block",size*1.5,.2,1,true)
+        		for i = 1,random(2,3) do
+			
+			end
+		end
+        for i = 1,5 do
+            sphere = sphereefx(part.CFrame,size/2,size*2,tostring(Part4.BrickColor),.25)
+            if mode == "Normal" then
+              
+            if size <75 then
+                partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),1)
+            else
+                partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),3.5)
+            end
+            elseif mode == "Demoralized" then
+            if size >120 then
+            
+            partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),15)
+            else
+            
+            partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),1.5)
+            end
+			elseif mode == "DEMORALIZATION" then
+            if size == huge then
+            partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),1.5)
+            end
+		elseif mode == "Star" then
+            if size <75 then
+                partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),1)
+            else
+                partray(part.CFrame * cf(random(-size,size),random(0,size),random(-size,size)),part.Position,tostring(Part4.BrickColor),3.5)
+            end
+            end
+            swait()
+        end
+    end))
+    firepart(part)
+end
+function placeweakfirepart(pos,size)
+    local part = ins("Part")
+    part.Anchored = true
+    part.CanCollide = false
+    part.Transparency = .4
+    part.Material = "Neon"
+    part.Name = "Impact"
+    part.CFrame = pos
+    part.Size = v3(.1,.1,.1)
+    tlerp(part,{Size = v3(size,.1,size)},.1,styles.Quad,directions.In)
+    part.Parent = effects
+    local mesh = ins("CylinderMesh",part)
+    lesserfirepart(part)
+end
+function throwfire(from,direc,maxdist)
+    local part = ins("Part")
+    part.Name = "Shard"
+    part.Size = v3(1,1,1)
+    part.Anchored = true
+    part.CanCollide = false
+    part.Transparency = .7
+    part.Material = "Neon"
+    part.CFrame = from
+    part.CFrame = cf(part.Position,direc)
+    part.Parent = effects
+    firepart(part)
+    local speed = 3
+    if mode == "Demoralized" then
+        speed = 6
+	elseif mode == "DEMORALIZATION" then
+	speed = 12
+elseif mode == "Star" then
+	speed = 4.5
+    end
+    coroutine.resume(coroutine.create(function()
+        for i = 1,maxdist do
+            local hit,pos,rot = rayc(part.Position,part.CFrame.LookVector,{char},speed+1)
+            part.CFrame = part.CFrame * cf(0,0,-speed) * angles(rad(-.35),rad(0),rad(0))
+            if hit then
+                local size = 10
+                if mode == "Demoralized" then
+                    size = 15
+			elseif mode == "DEMORALIZATION" then
+				size = 25
+                end
+                
+                break
+            end
+            wait()
+        end
+        part:Destroy()
+    end))
+end
+function magdamage(pos,maxrange,damage,id,vol,breakafterhit)
+    for i,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Humanoid") and v.Parent ~= char and v.Health >.01 then
+            local tors = v.Parent:FindFirstChild("Torso") or v.Parent:FindFirstChild("UpperTorso")
+            if tors and (pos-tors.Position).Magnitude <= maxrange then
+                v.Health = v.Health  
+            if mode == "Demoralized" or mode == "DEMORALIZATION" then
+                hum.Health = hum.Health 
+            end
+			local knock = 10
+			if mode == "DEMORALIZATION" then
+				knock = 50
+			end
+                knockback(tors,knock,.2)
+                pcall(function()
+                    sound(id,vol,1,ra)
+                end)
+			showdamage(tors.CFrame * cf(random(-1,1),random(-1,1),random(-1,1)),"-"..damage,1)
+                if v.Health > maxhealthuntilinstakill then
+           
+                    showdamage(tors.CFrame * cf(random(-1,1),random(-1,1),random(-1,1)),"Too much health...",2)
+                    return
+                end
+                if v.Health < .01 then
+                 
+                    return
+                end
+            if breakafterhit == true then
+                break
+            end
+            end
+        end
+    end
+end
+function killeveryone()
+	pcall(function()
+    for i,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Humanoid") and v.Parent ~= char then
+			v.Parent:BreakJoints()
+       
+		end
+    end
+	end)
+end
+function laser(from,to)
+    local hit,pos,rot = rayc(from.Position,to-h.Position,{char},600)
+        if mode == "Normal" then
+            magdamage(pos,7.5,math.random(10,15),851453784,2,false)
+            partray(from.CFrame,pos,tostring(Part4.BrickColor),2)
+            local rand = random(1,11)
+            if rand == 9 then
+            
+            end
+            local sphere = sphereefx(cf(pos),1,10,tostring(Part4.BrickColor),.3)
+		for i = 1,random(3,5) do
+		
+		end
+        elseif mode == "Demoralized" then
+            local rand = random(1,11)
+            if rand == 9 then
+            end
+            magdamage(pos,15,math.random(15,30),851453784,2,false)
+            local sphere = sphereefx(cf(pos),1,20,tostring(Part4.BrickColor),.3)
+		for i = 1,random(3,5) do
+	
+		end
+            partray(t.CFrame,pos,tostring(Part4.BrickColor),3.5)
+		elseif mode == "DEMORALIZATION" then
+            local rand = random(1,7)
+            if rand == 7 then
+            end
+            magdamage(pos,15,math.random(45,90),851453784,3.5,false)
+            local sphere = sphereefx(cf(pos),6,35,tostring(Part4.BrickColor),.3)
+		for i = 1,random(3,5) do
+		
+		end
+            partray(Part8.CFrame,pos,tostring(Part4.BrickColor),5)
+		elseif mode == "Star" then
+            magdamage(pos,8,math.random(12,18),851453784,2,false)
+            partray(from.CFrame,pos,tostring(Part4.BrickColor),2)
+            local rand = random(1,9)
+            if rand == 9 then
+            end
+            local sphere = sphereefx(cf(pos),2,12.5,tostring(Part4.BrickColor),.3)
+		for i = 1,random(3,5) do
+		
+		end
+        end
+end
+function skybeam(pos)
+	local size = 10
+	local damage = random(2,5)
+	if mode == "Demoralized" then
+		size = 15
+		damage = random(6,12)
+	elseif mode == "DEMORALIZATION" then
+		size = 35
+		damage = random(60,120)
+	end
+	sound(142885319,10,.5,char)
+	local hit,poss,rot = rayc(v3(pos.x,pos.y,pos.z)+v3(0,2,0),v3(pos.x,-700,pos.z),{char},500)
+	partray(pos*cf(0,500,0),poss,Part4.BrickColor,size,.5)
+end
+ 
+--Creates
+for i,v in pairs(char:GetDescendants()) do
+    if v:IsA("Part") then
+        v.Locked = true
+    end
+end
+nec = ins("Motor6D",t) nec.Part0 = p0 nec.Part1 = p1 nec.C0 = cf01 nec.C1 = cf1 nec.Name = "Neck"
+rs = ins("Motor6D",t) rs.Part0 = rsp0 rs.Part1 = rsp1 rs.C0 = cf03 rs.C1 = cf3 rs.Name = "Right Shoulder"
+ls = ins("Motor6D",t) ls.Part0 = lsp0 ls.Part1 = lsp1 ls.C0 = cf04 ls.C1 = cf4 ls.Name = "Left Shoulder"
+rh = ins("Motor6D",t) rh.Part0 = rhp0 rh.Part1 = rhp1 rh.C0 = cf05 rh.C1 = cf5 rh.Name = "Right Hip"
+lh = ins("Motor6D",t) lh.Part0 = lhp0 lh.Part1 = lhp1 lh.C0 = cf06 lh.C1 = cf6 lh.Name = "Left Hip"
+ 
+--Animation functions
+function land()
+if phit then
+    readytoland = false
+    landed = true
+    local oldspeed = hum.WalkSpeed
+    hum.WalkSpeed = 1.5
+    hum.JumpPower = 0
+    lsound:Play()
+    for i = 0,1,.1 do
+    rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-.5,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),i)
+    rh.C0 = rh.C0:Lerp(CFrame.new(1,-.5,-.3) * CFrame.Angles(rad(11),rad(90),rad(0)),i)
+    lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.5,-.25) * CFrame.Angles(rad(9),rad(-90),rad(0)),i)
+    rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-15),rad(0),rad(10)),i)
+    ls.C0 = ls.C0:Lerp(CFrame.new(-1,.35,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-15),rad(0),rad(-10)),i)
+    nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),i)
+    swait()
+    end
+    for i = 1,math.random(5,8) do
+    fire(effpart,effects,tostring(phit.BrickColor),tostring(phit.BrickColor),math.random(7,13)/10,math.random(3,6)/10,math.random(4,6)/10,phit.Material,0,0,"Block",5,0,1,true)
+    end
+    wait(.3)
+    landed = false
+    hum.WalkSpeed = oldspeed
+    hum.JumpPower = 50
+end
+end
+function punch1()
+    using = true
+	local speed1 = .075
+	local speed2 = .095
+	if mode == "Star" then
+		speed1 = .095
+		speed2 = .115
+	end
+    for i = 0,.75,speed1 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(10),rad(150)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(85),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-80),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(30),rad(90)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-10),rad(0),rad(10)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(210)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    if mode == "Normal" then
+        magdamage(t.Position,3,random(6,15),743886825,1.5,true)
+    elseif mode == "Demoralized" then
+        magdamage(t.Position,4,random(12,25),743886825,1.5,true)
+	elseif mode == "DEMORALIZATION" then
+        magdamage(t.Position,5,random(35,75),386946017,3.5,true)
+	elseif mode == "Star" then
+        magdamage(t.Position,3.5,random(8,18),743886825,1.5,true)
+    end
+    pcall(function()
+        sound(145487017,1,1,ra)
+    end)
+    for i = 0,1,speed2 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(-10),rad(210)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(95),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-80),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(.85,.5,-.35) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-10),rad(90)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-20),rad(0),rad(-10)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(165)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    using = false
+end
+function punch2()
+    using = true
+	local speed1 = .075
+	local speed2 = .095
+	if mode == "Star" then
+		speed1 = .095
+		speed2 = .115
+	end
+    for i = 0,.75,speed1 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(-10),rad(210)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(80),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-85),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-10),rad(0),rad(0)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(-30),rad(-90)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(150)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    if mode == "Normal" then
+        magdamage(t.Position,3,random(6,15),743886825,1.5,true)
+    elseif mode == "Demoralized" then
+        magdamage(t.Position,3,random(12,25),743886825,1.5,true)
+	elseif mode == "DEMORALIZATION" then
+        magdamage(t.Position,5,random(35,75),386946017,3.5,true)
+	elseif mode == "Star" then
+        magdamage(t.Position,3.5,random(8,18),743886825,1.5,true)
+    end
+    pcall(function()
+        sound(145487017,1,1,ra)
+    end)
+    for i = 0,1,speed2 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(10),rad(150)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(95),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-80),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-20),rad(-10),rad(0)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-.85,.5,-.35) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(10),rad(-90)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(195)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    using = false
+end
+function punch3()
+    using = true
+	local speed1 = .075
+	local speed2 = .095
+	if mode == "Star" then
+		speed1 = .095
+		speed2 = .115
+	end
+    for i = 0,.75,speed1 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-10)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(60),rad(60)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(-60),rad(-60)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    if mode == "Normal" then
+        pcall(function()
+            sound(539294959,3,1,ra)
+        end)
+        local sphere  = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,6,Part4.BrickColor,.3)
+        magdamage(sphere.Position,6,random(3,5),851453784,1.5,true)
+        coroutine.resume(coroutine.create(function()
+            for i = 1,4 do
+              
+            	for i = 1,random(1,2) do
+			
+			end
+		end
+            for i = 1,3 do
+                sphere = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,6,Part4.BrickColor,.3)
+                magdamage(sphere.Position,6,random(3,5),851453784,1.5,true)
+                swait()
+            end
+        end))
+    elseif mode == "Demoralized" then
+        pcall(function()
+            sound(539294959,3,1,ra)
+        end)
+        local sphere = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,9,Part4.BrickColor,.3)
+        magdamage(sphere.Position,9,random(6,9),851453784,1.5,true)
+        coroutine.resume(coroutine.create(function()
+            for i = 1,4 do
+                fire(sphere,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/6,math.random(3,6)/5,math.random(6,10)/17,"Neon",-12,12,"Block",15,.2,1,true)
+            end
+            for i = 1,3 do
+                sphere = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,9,Part4.BrickColor,.3)
+                magdamage(sphere.Position,9,random(6,9),851453784,1.5,true)
+                swait()
+            end
+        end))
+	elseif mode == "DEMORALIZATION" then
+        pcall(function()
+            sound(539294959,6,1,ra)
+        end)
+        local sphere = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,14,Part4.BrickColor,.3)
+        magdamage(sphere.Position,10,random(25,60),851453784,1.5,true)
+        coroutine.resume(coroutine.create(function()
+            for i = 1,4 do
+                fire(sphere,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/6,math.random(3,6)/5,math.random(6,10)/17,"Neon",-12,12,"Block",15,.2,1,true)
+            end
+            for i = 1,3 do
+                sphere = sphereefx(rut.CFrame * cf(0,0,-1.5),.5,14,Part4.BrickColor,.3)
+      		  magdamage(sphere.Position,14,random(25,60),851453784,1.5,true)
+                swait()
+            end
+        end))
+	elseif mode == "Star" then
+        pcall(function()
+            sound(539294959,3,1,ra)
+        end)
+        local sphere  = sphereefx(rut.CFrame * cf(0,0,-1.5),.7,7,Part4.BrickColor,.3)
+        magdamage(sphere.Position,7,random(4,6),851453784,1.5,true)
+        coroutine.resume(coroutine.create(function()
+            for i = 1,4 do
+                fire(sphere,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/10,math.random(3,6)/10,math.random(6,10)/20,"Neon",-7,7,"Block",10,.2,1,true)
+            	for i = 1,random(1,2) do
+		
+			end
+		end
+            for i = 1,3 do
+                sphere  = sphereefx(rut.CFrame * cf(0,0,-1.5),.7,7,Part4.BrickColor,.3)
+       		 magdamage(sphere.Position,7,random(4,6),851453784,1.5,true)
+                swait()
+            end
+        end))
+    end
+    for i = 0,1,speed2 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-10)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-60),rad(80)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(60),rad(-80)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    using = false
+end
+function tp()
+pcall(function()
+if mouse.Hit then
+    local oldtorsocf = t.CFrame
+    local sphere = sphereefx(rut.CFrame,3,9,Part4.BrickColor,.3)
+    if mode == "Normal" then
+        magdamage(sphere.Position,12,random(3,5),851453784,1.5,true)
+    elseif mode == "Demoralized" then
+        magdamage(sphere.Position,12,random(6,9),851453784,1.5,true)
+	elseif mode == "DEMORALIZATION" then
+           magdamage(sphere.Position,18,random(30,75),851453784,1.5,true)
+	elseif mode == "Star" then
+           magdamage(sphere.Position,10,random(4,6),851453784,1.5,true)
+    end
+	for i = 1,4 do
+		fire(rut,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/6,math.random(3,6)/5,math.random(6,10)/17,"Neon",-12,12,"Block",15,.2,1,true)
+		for i = 1,random(1,2) do
+		
+		end
+	end
+    pcall(function()
+        sound(2346156347,6,1,t)
+    end)
+    rut.CFrame = cf(mouse.Hit.x,mouse.Hit.y,mouse.Hit.z) * cf(0,3,0)
+	local wideness = 1
+	if mode == "DEMORALIZATION" then
+		wideness = 2.5
+	end
+    partray(oldtorsocf,t.Position,Part4.BrickColor,wideness)
+	for i = 1,4 do
+		fire(rut,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/6,math.random(3,6)/5,math.random(6,10)/17,"Neon",-12,12,"Block",15,.2,1,true)
+		for i = 1,random(1,2) do
+		
+		end
+	end
+    for i = 1,3 do
+        sphere = sphereefx(rut.CFrame,5,12,Part4.BrickColor,.3)
+        if mode == "Normal" then
+            magdamage(sphere.Position,12,random(3,5),851453784,1.5,true)
+        elseif mode == "Demoralized" then
+            magdamage(sphere.Position,12,random(6,9),851453784,1.5,true)
+		elseif mode == "DEMORALIZATION" then
+            magdamage(sphere.Position,18,random(30,75),851453784,1.5,true)
+		elseif mode == "Star" then
+           magdamage(sphere.Position,10,random(4,6),851453784,1.5,true)
+        end
+        swait()
+    end
+end
+end)
+end
+function throwfireanim()
+    using = true
+	local speed1 = .035
+	local speed2 = .095
+	if mode == "Star" then
+		speed1 = .055
+		speed2 = .095
+	end
+    for i = 0,.7,speed1 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(145)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,-.5) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(10),rad(-70),rad(110)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-10),rad(0),rad(-10)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(195)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    throwfire(ra.CFrame*cf(0,-1.5,0),mouse.Hit.p,100)
+    for i = 0,.8,speed2 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(215)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(.85,.5,-.25) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-20),rad(40),rad(100)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-15),rad(0),rad(10)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(165)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    using = false
+end
+local sou = Instance.new("Sound")
+
+function roaranim()
+    using = true
+    roar.TimePosition = .3
+	roar.Volume = 5
+	local siez = 25
+	if mode == "DEMORALIZATION" then
+		roar.Volume = 10
+		siez = 40
+	end
+    roar:Play()
+    roaring = true
+    local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+    if hit then
+    
+    end
+    for i = 0,.8,.065 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-70),rad(0),rad(180)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-20)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(20)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1.5,.5,-.4) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-110),rad(75)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1.5,.5,-.4) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(110),rad(-75)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-50),rad(0),rad(180)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+        end
+    repeat
+        change = change+sine
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-70),rad(0),rad(180)) * angles(-cos(change/aa/2.5) * rad(10),0,0),.1)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-20)) * angles(0,0,-cos(change/aa/2.5) * rad(10)),.1)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(20)) * angles(0,0,cos(change/aa/2.5) * rad(10)),.1)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1.5,.5,-.4) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-110),rad(75)),.1)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1.5,.5,-.4) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(110),rad(-75)),.1)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-50),rad(0),rad(180)) * angles(cos(change/aa/1.5)*rad(10),sin(change/aa/1.5)*rad(2.5),sin(change/aa/1)*rad(10)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+        swait()
+    until roar.TimePosition >=5
+    roar:Stop()
+    roaring = false
+    using = false
+end
+function giantkickorstompanim()
+    if mode == "Normal" and not superattackcooldown1 then
+        superattackcooldown1 = true
+        using = true
+        hum.WalkSpeed = 0
+        hum.JumpPower = 0
+        for i = 0,.8,.045 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-.35,-.5) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-10)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(125)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(-40),rad(-125)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+        if hit then
+        
+        end
+        for i = 0,.8,.065 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,-.5) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-10)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(-45)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(-40),rad(45)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        using = false
+        superattackcooldown1 = false
+    elseif mode == "Demoralized" and not superattackcooldown2 then
+        superattackcooldown2 = true
+        using = true
+        hum.WalkSpeed = 0
+        hum.JumpPower = 0
+        for i = 0,1.6,.045 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-1,0) * CFrame.Angles(rad(-90),rad(-20),rad(160)) * CFrame.Angles(rad(60),rad(0),rad(0)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-.3,-.6) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(30),rad(15)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,.7,.1) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(-35)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(.9,.35,.15) * cf(random(-2,2)/20,random(-2,2)/20,random(-2,2)/20) * CFrame.Angles(rad(0),rad(60),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(110)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.4,-.5) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(20),rad(-60)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-120),rad(0),rad(200)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+        if hit then
+          
+        end
+        for i = 0,.6,.06 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-1,0) * CFrame.Angles(rad(-90),rad(10),rad(200)) * CFrame.Angles(rad(60),rad(0),rad(0)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-.3,-.6) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-10),rad(5)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.7,.1) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(-35)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(.9,.25,-.75) * cf(random(-2,2)/20,random(-2,2)/20,random(-2,2)/20) * CFrame.Angles(rad(0),rad(60),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(60)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.4,-.5) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(10),rad(-50)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-120),rad(0),rad(160)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        using = false
+        wait(7)
+        superattackcooldown2 = false
+	elseif mode == "DEMORALIZATION" and not superattackcooldown3 then
+        superattackcooldown3 = true
+        using = true
+        hum.WalkSpeed = 0
+        hum.JumpPower = 0
+        for i = 0,1.6,.045 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-1,0) * CFrame.Angles(rad(-90),rad(-20),rad(160)) * CFrame.Angles(rad(60),rad(0),rad(0)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-.3,-.6) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(30),rad(15)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,.7,.1) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(-35)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(.9,.35,.15) * cf(random(-2,2)/20,random(-2,2)/20,random(-2,2)/20) * CFrame.Angles(rad(0),rad(60),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(110)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.4,-.5) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(20),rad(-60)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-120),rad(0),rad(200)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+        if hit then
+    
+        end
+        for i = 0,.6,.06 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-1,0) * CFrame.Angles(rad(-90),rad(10),rad(200)) * CFrame.Angles(rad(60),rad(0),rad(0)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-.3,-.6) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-10),rad(5)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.7,.1) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(40),rad(-35)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(.9,.25,-.75) * cf(random(-2,2)/20,random(-2,2)/20,random(-2,2)/20) * CFrame.Angles(rad(0),rad(60),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(60)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.4,-.5) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(10),rad(-50)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-120),rad(0),rad(160)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+        using = false
+        wait(4)
+        superattackcooldown3 = false
+	elseif mode == "Star" and not superattackcooldown4 then
+        superattackcooldown4 = true
+        using = true
+        hum.WalkSpeed = 0
+        hum.JumpPower = 0
+        for i = 0,.95,.055 do
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+             rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,.1) * CFrame.Angles(rad(-80),rad(0),rad(180)),i)
+           rs.C0 = rs.C0:Lerp(CFrame.new(1,.7,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(170)),i)
+           ls.C0 = ls.C0:Lerp(CFrame.new(-.7,.4,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(2),rad(-90),rad(-91)),i)
+           nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-60),rad(0),rad(180)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+        end
+		hum.WalkSpeed = 35
+       	 hum.JumpPower = 85
+		coroutine.resume(coroutine.create(function()
+		sound(376107717,10,1,h)
+		sphereefx(ra.CFrame*cf(0,-1,0),1,3,Part4.BrickColor,.2)
+		partray(ra.CFrame,v3(ra.CFrame.x,ra.CFrame.y+500,ra.CFrame.z),tostring(Part4.BrickColor),1,.5)
+		wait(.5)
+		for i = 1,random(5,8) do
+			skybeam(cf(rut.CFrame.x+random(-50,50),rut.CFrame.y+150,rut.CFrame.z+random(-50,50)))
+		end
+		end))
+        using = false
+        wait(2)
+        superattackcooldown4 = false
+    end
+end
+function laseranim()
+    using = true
+	local speed1 = .03
+	if mode == "Star" then
+		speed1 = .05
+	end
+    for i = 0,.8,speed1 do
+        turnto(mouse.Hit.p)
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(270)),i)
+            rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+            lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(0)),i)
+            rs.C0 = rs.C0:Lerp(CFrame.new(1.25,0,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-90),rad(0),rad(0)),i)
+            ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(-10),rad(15)),i)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(90)),i)
+            nec.C1 = nec.C1:Lerp(cf1,.1)
+            rutj.C1 = rutj.C1:Lerp(cf2,.1)
+            rs.C1 = rs.C1:Lerp(cf3,.1)
+            ls.C1 = ls.C1:Lerp(cf4,.1)
+            rh.C1 = rh.C1:Lerp(cf5,.1)
+            lh.C1 = lh.C1:Lerp(cf6,.1)
+            swait()
+    end
+	sphereefx(ra.CFrame*cf(0,-1,0),1,3,Part4.BrickColor,.2)
+    local soun = sound(376107717,5,1,h)
+    laser(Part4,mouse.Hit.p)
+    using = false
+end
+function skystrikeanim()
+	using = true
+	local speed1 = .03
+	if mode == "Star" then
+		speed1 = .05
+	end
+	for i = 0,.8,speed1 do
+           hum.WalkSpeed = 0
+           hum.JumpPower = 0
+           rutj.C0 = rutj.C0:Lerp(CFrame.new(0,.1,.1) * CFrame.Angles(rad(-80),rad(0),rad(180)),i)
+           rh.C0 = rh.C0:Lerp(CFrame.new(1,-1.1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-10)),i)
+           lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1.1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+           rs.C0 = rs.C0:Lerp(CFrame.new(1,.7,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(10),rad(-15),rad(170)),i)
+           ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-15),rad(0),rad(10)),i)
+           nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-60),rad(0),rad(180)),i)
+           nec.C1 = nec.C1:Lerp(cf1,.1)
+           rutj.C1 = rutj.C1:Lerp(cf2,.1)
+           rs.C1 = rs.C1:Lerp(cf3,.1)
+           ls.C1 = ls.C1:Lerp(cf4,.1)
+           rh.C1 = rh.C1:Lerp(cf5,.1)
+           lh.C1 = lh.C1:Lerp(cf6,.1)
+           swait()
+	end
+	skybeam(cf(mouse.Hit.x,mouse.Hit.y,mouse.Hit.z))
+	using = false
+end
+ 
+--Connections
+local mouse = plr:GetMouse()
+mouse.Button1Down:Connect(function()
+    if not using then
+        if currentpunch == 1 then
+            currentpunch = currentpunch+1
+            punch1()
+        elseif currentpunch == 2 then
+            currentpunch = currentpunch+1
+            punch2()
+        elseif currentpunch == 3 then
+            currentpunch = 1
+            punch3()
+        end
+    end
+end)
+mouse.KeyDown:Connect(function(key)
+    if key == "q" and mode == "Normal" then
+        changecolors(.25,modecolors.demoralizedcolors.color1,modecolors.demoralizedcolors.color2,modecolors.demoralizedcolors.neoncolor)
+        mode = "Demoralized"
+		text.Text = mode
+        if music or music.Parent then
+            music.SoundId = ids.demoralizedmode
+            songid = ids.demoralizedmode
+		if not deafen then
+			music.Volume = 1.5
+			vol = 1.5
+		end
+        end
+elseif key == "q" and mode == "Demoralized" then
+	mode = "DEMORALIZATION"
+	text.Text = mode
+	changecolors(.25,modecolors.demoralizationcolors.color1,modecolors.demoralizationcolors.color2,modecolors.demoralizationcolors.neoncolor)
+	if music or music.Parent then
+		music.SoundId = ids.demoralizationmode
+		songid = ids.demoralizationmode
+		if not deafen then
+			music.Volume = 5
+			vol = 5
+		end
+	end
+	elseif key == "q" and mode == "DEMORALIZATION" then
+        changecolors(.25,modecolors.starcolors.color1,modecolors.starcolors.color2,modecolors.starcolors.neoncolor)
+        mode = "Star"
+		text.Text = mode
+        if music or music.Parent then
+            music.SoundId = ids.starmode
+            songid = ids.starmode
+		if not deafen then
+			music.Volume = 1.5
+			vol = 1.5
+		end
+        end
+    elseif key == "q" and mode == "Star" then
+        changecolors(.25,modecolors.normalcolors.color1,modecolors.normalcolors.color2,modecolors.normalcolors.neoncolor)
+        mode = "Normal"
+		text.Text = mode
+        if music or music.Parent then
+            music.SoundId = ids.normalmode
+            songid = ids.normalmode
+		if not deafen then
+			music.Volume = 1.5
+			vol = 1.5
+		end
+        end
+    end
+    if key == "x" and not using then
+        tp()
+    end
+    if key == "r" and not using then
+        throwfireanim()
+    end
+    if key == "t" and not using and mode == "Demoralized" or key == "t" and not using and mode == "DEMORALIZATION" then
+        roaranim()
+    end
+    if key == "n" and not using then
+        giantkickorstompanim()
+    end
+    if key == "f" and not using then
+        laseranim()
+    end
+    if key == "m" and not deafen then
+        deafen = true
+        music.Volume = 0
+        vol = 0
+    elseif key == "m" and deafen then
+        deafen = false
+        vol = 1.5
+		if mode == "DEMORALIZATION" then
+			vol = 5
+		end
+        music.Volume = vol
+    end
+	if key == "e" and not using then
+		skystrikeanim()
+	end
+end)
+ 
+--Animations
+local firewristbandeffects = coroutine.wrap(function()
+    while hum.Health >.01 do
+        if mode == "Normal" and not roaring and not landed then
+            hum.WalkSpeed = 16
+       	 hum.JumpPower = 50
+		jp = 50
+        elseif mode == "Demoralized" and not roaring and not landed then
+            hum.WalkSpeed = 12
+       	 hum.JumpPower = 50
+		jp = 50
+		elseif mode == "DEMORALIZATION" and not roaring and not landed then
+            hum.WalkSpeed = 10
+       	 hum.JumpPower = 50
+		jp = 50
+		elseif mode == "Star" and not roaring and not landed then
+            hum.WalkSpeed = 35
+       	 hum.JumpPower = 85
+		jp = 85
+        end
+    if roaring then
+        hum.WalkSpeed = 0
+        hum.JumpPower = 0
+    end
+    if mode == "Demoralized" then
+        local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+        local rand = random(1,7)
+        if hit and rand == 7 then
+            placeweakfirepart(cf(pos,pos+rot)*angles(rad(-90),0,0),random(3,6))
+        end
+	elseif mode == "DEMORALIZATION" then
+	local hit,pos,rot = rayc(rut.Position,-rut.CFrame.UpVector,{char},500)
+        local rand = random(1,7)
+        if hit and rand == 5 then
+            placeweakfirepart(cf(pos,pos+rot)*angles(rad(-90),0,0),random(7,12))
+        end
+    end
+    if not roar.Parent then
+        roar = ins("Sound",rut)
+        roar.Volume = 5
+        roar.SoundId = "rbxassetid://2631687985"
+        roar.EmitterSize = 100
+    end
+		local rand = random(1,3)
+		if rand == 2 then
+		
+		end
+   		 fire(Part8,effects,tostring(Part4.BrickColor),tostring(Part6.BrickColor),math.random(7,13)/15,math.random(3,6)/15,math.random(6,10)/12,"Neon",-1,1,"Block",3,.2,1,true)
+        wait(random(2,4)/6)
+    end
+end)
+local anims = coroutine.wrap(function()
+while hum.Health > .01 do
+    signweld.C0 = angles(rad(0),rad(90),rad(0))
+    if not lsound.Parent then
+    lsound = Instance.new("Sound",effpart) lsound.Volume = lsvol lsound.SoundId = "rbxassetid://1161221108"
+    end
+    if not music.Parent or not music then
+        music = ins("Sound",t)
+        music.Volume = vol
+        music.SoundId = songid
+        music.Looped = true
+        music.TimePosition = timepos
+		music.EmitterSize = 100
+        music:Play()
+    end
+	if not effects or not effects.Parent then
+		effects = ins("Model",char)
+		effects.Name = "Effects"
+	end
+    timepos = music.TimePosition
+    local hit,pos,rot = rayc(rut.Position -v3(0,1,0),-rut.CFrame.UpVector,{char},2.7)
+    local grhit,grpos,grrot = rayc(grabpart.Position,-grabpart.CFrame.UpVector,{char},1)
+    phit = hit
+    if not using then
+    if grhit and grhit.Anchored == true then
+    cangrabthecorner = true
+    else
+    cangrabthecorner = false
+    end
+    end
+   
+    if cangrabthecorner and not grabbedc then
+    local shit,spos,srot = rayc(rut.Position+Vector3.new(0,2.5,0),rut.CFrame.LookVector,{char},1.5)
+    if shit then
+    grabbedc = true
+    local cf = CFrame.new(spos,spos+srot) * CFrame.Angles(rad(0),rad(180),0) * CFrame.new(0,-2,.7)
+    using = true
+    cangrabthecorner = false
+    rut.Anchored = true
+    local oldws = hum.WalkSpeed
+    hum.WalkSpeed = 0
+    hum.JumpPower = 0
+    rut.CFrame = cf
+    local curcf = rut.CFrame
+    for i = 0,1,.1 do
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(.85,.8,.5) * CFrame.Angles(rad(160),rad(90),rad(0)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-.85,.8,.5) * CFrame.Angles(rad(160),rad(-90),rad(0)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-30),rad(0),rad(180)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    for i = 0,.65,.025 do
+        rut.CFrame = rut.CFrame:Lerp(curcf * CFrame.new(0,4.5,-1.5),i)
+       rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-.4,0) * CFrame.Angles(rad(-120),rad(0),rad(180)),i)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.6,-.6) * CFrame.Angles(rad(-20),rad(90),rad(0)),i)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.1,-.6) * CFrame.Angles(rad(30),rad(-90),rad(0)),i)
+        rs.C0 = rs.C0:Lerp(CFrame.new(.85,.3,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-.85,.3,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(10)),i)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),i)
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        swait()
+    end
+    hum.WalkSpeed = oldws
+    rut.Anchored = false
+    t.Anchored = false
+    using = false
+    grabbedc = false
+    end
+    end
+   
+    walkspeed = hum.WalkSpeed
+    sumthin = walkspeed/8
+    animspeed1 = 1.5/sumthin
+    change = change +sine
+   
+    local vervel = rut.Velocity.y
+    local tvel = (rut.Velocity * v3(1,0,1)).Magnitude
+    local Ccf=rut.CFrame
+    local Walktest1 = hum.MoveDirection*Ccf.LookVector
+    local Walktest2 = hum.MoveDirection*Ccf.RightVector
+    local rotfb = Walktest1.X+Walktest1.Z
+    local rotrl = Walktest2.X+Walktest2.Z
+   
+    if lookinaround then
+        lchange = lchange +sine
+    else
+        lchange = 0
+    end
+ 
+    if anim == "fall" and not hit then
+    readytoland = true
+    end
+   
+    if readytoland then
+    hum.JumpPower = 0
+    else
+    hum.JumpPower = jp
+    end
+   
+    if not landed then
+    if readytoland and hit then
+    land()
+    end
+    if mode == "Normal" then
+    if not hum.Sit then
+    if anim == "idle" and hit ~= nil then
+    if not using then
+    --Neck
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,-sin(change/aa/2.5)*rad(1)),.1)
+    --Humanoid Root Part
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,0),.1)
+    --Shoulders
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/1.5)*rad(1),sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(2.5)),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(1),-sin(change/aa/2.5)*rad(2.5)),.1)
+    --Hips
+        rh.C1 = rh.C1:Lerp(cff5 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        lh.C1 = lh.C1:Lerp(cff6 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,-sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        end
+    elseif anim == "sit" then
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    elseif anim == "jump" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(-rotfb/3,0,rotrl/3),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,0),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,-rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        end
+    elseif anim == "fall" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(rotfb/2,0,rotrl),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,rotrl/5),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,-rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(20)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(-20)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+        end
+    elseif anim == "walk" and hit ~= nil then
+        if not using then
+        --Neck
+            nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/animspeed1)/17.5) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(5),-rut.RotVelocity.y/90,rut.RotVelocity.y/60),walkanimspeed)
+        --Humanoid Root Part
+            rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,0,cos(change/aa/(animspeed1/2))/15) * CFrame.Angles(sin(change/aa/(animspeed1/2))*rad(2.5*sumthin),-rut.RotVelocity.y/100,sin(change/aa/animspeed1)*rad(5*sumthin) * -rut.RotVelocity.y/100) * CFrame.Angles(-rotfb/5,rotrl/5,0),walkanimspeed)
+        --Shoulders
+            rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(0,0,0) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(3*sumthin)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,0) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(35*sumthin)*rotfb),walkanimspeed)
+            ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(0,0,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(3*sumthin)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(35*sumthin)*rotfb),walkanimspeed)
+        --Hips
+            rh.C1 = rh.C1:Lerp(cf5 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+            lh.C1 = lh.C1:Lerp(cf6 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(-cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+        end
+    end
+    else
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    end
+    elseif mode == "Demoralized" then
+        if not hum.Sit then
+    if anim == "idle" and hit ~= nil then
+    if not using then
+    --Neck
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,-sin(change/aa*1.5)*rad(5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+    --Humanoid Root Part
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,0),.1)
+    --Shoulders
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/1.5)*rad(1),sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(2.5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(1),-sin(change/aa/2.5)*rad(2.5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+    --Hips
+        rh.C1 = rh.C1:Lerp(cff5 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        lh.C1 = lh.C1:Lerp(cff6 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,-sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        end
+    elseif anim == "sit" then
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    elseif anim == "jump" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(-rotfb/3,0,rotrl/3),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,0),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,-rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        end
+    elseif anim == "fall" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(rotfb/2,0,rotrl),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,rotrl/5),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,-rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(20)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(-20)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+        end
+    elseif anim == "walk" and hit ~= nil then
+        if not using then
+        --Neck
+            nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/animspeed1)/17.5) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(5),-rut.RotVelocity.y/90,rut.RotVelocity.y/60) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),walkanimspeed)
+        --Humanoid Root Part
+            rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,0,cos(change/aa/(animspeed1/2))/15) * CFrame.Angles(sin(change/aa/(animspeed1/2))*rad(2.5*sumthin),-rut.RotVelocity.y/100,sin(change/aa/animspeed1)*rad(5*sumthin) * -rut.RotVelocity.y/100) * CFrame.Angles(-rotfb/5,rotrl/5,0),walkanimspeed)
+        --Shoulders
+            rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(cos(change/aa/2.5)/(1.5*10),-cos(change/aa/2.5)/(1.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(2.5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+            ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(0,0,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(3*sumthin)*rotfb,-sin(change/aa/animspeed1)*rad(10)*rotfb,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(15)*rotfb,-sin(change/aa/animspeed1)*rad(35*sumthin)*rotfb or rotrl) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),walkanimspeed)
+        --Hips
+            rh.C1 = rh.C1:Lerp(cf5 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+            lh.C1 = lh.C1:Lerp(cf6 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(-cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+        end
+    end
+    else
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    end
+ 	elseif mode == "DEMORALIZATION" then
+        if not hum.Sit then
+    if anim == "idle" and hit ~= nil then
+    if not using then
+    --Neck
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,-sin(change/aa*1.25)*rad(10)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+    --Humanoid Root Part
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,0),.1)
+    --Shoulders
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/1.5)*rad(1),sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(2.5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(1),-sin(change/aa/2.5)*rad(2.5)) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),.1)
+    --Hips
+        rh.C1 = rh.C1:Lerp(cff5 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        lh.C1 = lh.C1:Lerp(cff6 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,-sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        end
+    elseif anim == "sit" then
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    elseif anim == "jump" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(-rotfb/3,0,rotrl/3),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,0),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,-rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        end
+    elseif anim == "fall" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(rotfb/2,0,rotrl),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,rotrl/5),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,-rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(20)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(-20)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+        end
+    elseif anim == "walk" and hit ~= nil then
+        if not using then
+        --Neck
+            nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/animspeed1)/17.5) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(5),-rut.RotVelocity.y/90,rut.RotVelocity.y/60) * angles(rad(random(-10,10)),rad(random(-10,10)),rad(random(-10,10))),walkanimspeed)
+        --Humanoid Root Part
+            rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,0,cos(change/aa/(animspeed1/2))/15) * CFrame.Angles(sin(change/aa/(animspeed1/2))*rad(2.5*sumthin),-rut.RotVelocity.y/100,sin(change/aa/animspeed1)*rad(5*sumthin) * -rut.RotVelocity.y/100) * CFrame.Angles(-rotfb/5,rotrl/5,0),walkanimspeed)
+        --Shoulders
+            rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(0,0,0) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(3*sumthin)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,0) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(20*sumthin)*rotfb),walkanimspeed)
+            ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(0,0,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(3*sumthin)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,0) * CFrame.Angles(sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(5)*rotfb,-sin(change/aa/animspeed1)*rad(20*sumthin)*rotfb),walkanimspeed)
+        --Hips
+            rh.C1 = rh.C1:Lerp(cf5 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+            lh.C1 = lh.C1:Lerp(cf6 * CFrame.new((cos(change/aa/animspeed1)/3.5)*rotfb or (cos(change/aa/animspeed1)/3.5)*rotrl,(-cos(change/aa/animspeed1)/4),(cos(change/aa/animspeed1)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,-sin(change/aa/animspeed1)*rad(15*sumthin)*rotrl,sin(change/aa/animspeed1)*rad(30*sumthin)*rotfb),walkanimspeed)
+        end
+    end
+    else
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    end
+	elseif mode == "Star" then
+        if not hum.Sit then
+    if anim == "idle" and hit ~= nil then
+    if not using then
+    --Neck
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/3.5)*rad(6.5),-sin(change/aa/2.5)*rad(1)),.1)
+    --Humanoid Root Part
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10)) * CFrame.Angles(sin(change/aa/2.5)*rad(1),0,0),.1)
+    --Shoulders
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,0) * CFrame.Angles(sin(change/aa/1.5)*rad(1),sin(change/aa/2.5)*rad(3),sin(change/aa/2.5)*rad(2.5)),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(cos(change/aa/2.5)/(2.5*10),cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,0) * CFrame.Angles(sin(change/aa/2.5)*rad(1),sin(change/aa/2.5)*rad(3),-sin(change/aa/2.5)*rad(2.5)),.1)
+    --Hips
+        rh.C1 = rh.C1:Lerp(cff5 * CFrame.new(cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        lh.C1 = lh.C1:Lerp(cff6 * CFrame.new(-cos(change/aa/2.5)/(2.5*10),-cos(change/aa/2.5)/(2.5*10),0) * CFrame.Angles(0,0,-sin(change/aa/2.5)*rad(1)) * CFrame.Angles(0,0,0),.1)
+        end
+    elseif anim == "sit" then
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    elseif anim == "jump" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(-rotfb/3,0,rotrl/3),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,0),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,-rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        end
+    elseif anim == "fall" and hit == nil then
+        if not using then
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.Angles(rotfb/2,0,rotrl),.1)
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.Angles(-rotfb/5,rotrl/5,rotrl/5),.1)
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.Angles(-rotrl/3,rotfb/3,rotfb/3),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.Angles(rotrl/3,-rotfb/3,-rotfb/3),.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(20)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(-20)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+        end
+    elseif anim == "walk" and hit ~= nil then
+        if not using then
+        --Neck
+            nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,cos(change/aa/animspeed1/1.5)/15) * CFrame.Angles(-sin(change/aa/animspeed1/1.5)*rad(5),-rut.RotVelocity.y/90,rut.RotVelocity.y/60),walkanimspeed/1.3)
+        --Humanoid Root Part
+            rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,0,cos(change/aa/(animspeed1/2)/1)/6) * CFrame.Angles(sin(change/aa/(animspeed1/2)/1.5)*rad(2.5*sumthin),-rut.RotVelocity.y/100,sin(change/aa/animspeed1/1.5)*rad(5*sumthin) * -rut.RotVelocity.y/100) * CFrame.Angles(-rotfb/5,rotrl/5,0),walkanimspeed/1.3)
+        --Shouldersd
+            rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(0,0,0) * CFrame.Angles(-cos(change/aa/animspeed1/.75)*rad(5),-sin(change/aa/animspeed1/.75)*rad(5)*rotfb,0) * CFrame.Angles(-sin(change/aa/animspeed1/1.5)*rad(5)*rotfb,-sin(change/aa/animspeed1/1.5)*rad(5)*rotrl,-sin(change/aa/animspeed1/1.5)*rad(35*sumthin/1.3)*rotfb),walkanimspeed/1)
+            ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(0,0,0) * CFrame.Angles(cos(change/aa/animspeed1/.75)*rad(5),sin(change/aa/animspeed1/.75)*rad(5)*rotrl,0) * CFrame.Angles(sin(change/aa/animspeed1/1.5)*rad(5)*rotfb,-sin(change/aa/animspeed1/1.5)*rad(5)*rotfb,-sin(change/aa/animspeed1/1.5)*rad(35*sumthin/1.3)*rotfb),walkanimspeed/1)
+        --Hips
+            rh.C1 = rh.C1:Lerp(cf5 * CFrame.new((cos(change/aa/animspeed1/1.5)/1)*rotfb or (cos(change/aa/animspeed1/1.5)*1.5)*rotrl,(cos(change/aa/animspeed1/1.5)/4),(cos(change/aa/animspeed1/1.5)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1/1.5)*rad(15*sumthin)*rotrl,0,sin(change/aa/animspeed1/1.5)*rad(35*sumthin/1.3)*rotfb),walkanimspeed/1.3)
+            lh.C1 = lh.C1:Lerp(cf6 * CFrame.new((cos(change/aa/animspeed1/1.5)/1)*rotfb or (cos(change/aa/animspeed1/1.5)*1.5)*rotrl,(-cos(change/aa/animspeed1/1.5)/4),(cos(change/aa/animspeed1/1.5)/4)*rotrl) * CFrame.Angles(-sin(change/aa/animspeed1/1.5)*rad(15*sumthin)*rotrl,0,sin(change/aa/animspeed1/1.5)*rad(35*sumthin/1.3)*rotfb),walkanimspeed/1.3)
+        end
+    end
+    else
+        nec.C1 = nec.C1:Lerp(cf1,.1)
+        rutj.C1 = rutj.C1:Lerp(cf2,.1)
+        rs.C1 = rs.C1:Lerp(cf3,.1)
+        ls.C1 = ls.C1:Lerp(cf4,.1)
+        rh.C1 = rh.C1:Lerp(cf5,.1)
+        lh.C1 = lh.C1:Lerp(cf6,.1)
+    end
+    end
+    if not grabbedc then
+    if vervel > 1 and hum.Sit == false then
+        anim = "jump"
+        if not using then
+    if mode == "Normal" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.4,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.25,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),animspeed*50)
+    elseif mode == "Demoralized" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.4,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.25,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),animspeed*50)
+	elseif mode == "DEMORALIZATION" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.4,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.25,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),animspeed*50)
+	elseif mode == "Star" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.4,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.25,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-40),rad(0),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),animspeed*50)
+    end
+        end
+    elseif vervel < -2 and hum.Sit == false then
+        anim = "fall"
+        if not using then
+    if mode == "Normal" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+    elseif mode == "Demoralized" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+	elseif mode == "DEMORALIZATION" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+	elseif mode == "Star" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-80),rad(0),rad(180)),.025)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.1,-.4) * CFrame.Angles(rad(-10),rad(85),rad(0)),.025)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.55,-.25) * CFrame.Angles(rad(-10),rad(-85),rad(0)),.025)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.35,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.25,-0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(-50),rad(0),rad(0)),.025)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),.025)
+        end
+      end
+    elseif tvel < 2 and hum.Sit == false then
+        anim = "idle"
+        if not using then
+    if mode == "Normal" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),animspeed*50)
+    elseif mode == "Demoralized" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * angles(rad(-45),rad(10),rad(165)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(0)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)),animspeed*50)
+	elseif mode == "DEMORALIZATION" then
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-.1,0) * CFrame.Angles(rad(-115),rad(0),rad(180)) * CFrame.Angles(rad(0*sumthin),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(-10)) * CFrame.Angles(rad(0),rad(0),rad(35)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(10)) * CFrame.Angles(rad(0),rad(0),rad(-35)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * angles(rad(0),rad(0),rad(25)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-25)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-130),rad(0),rad(180)),animspeed*50)
+	elseif mode == "Star" then
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,-.1,0) * CFrame.Angles(rad(-80),rad(0),rad(180)) * CFrame.Angles(rad(0),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-5),rad(-10)),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(5),rad(10)),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(.7,.4,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * angles(rad(2),rad(90),rad(90)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-.7,.4,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(2),rad(-90),rad(-91)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-100),rad(0),rad(180)),animspeed*50)
+        end
+        end
+    elseif tvel > 1 and hum.Sit == false then
+        anim = "walk"
+        if not using then
+    if mode == "Normal" then
+        rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)) * CFrame.Angles(rad(0*sumthin),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.8+rotrl/4,-.15) * CFrame.Angles(rad(0),rad(90),rad(-10)) * CFrame.Angles(rad(0),rad(0),0) * CFrame.Angles(-rotrl/5,-rotrl/5,rotfb/5),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.8-rotrl/4,-.15) * CFrame.Angles(rad(0),rad(-90),rad(10)) * CFrame.Angles(rad(0),rad(0),0) * CFrame.Angles(rotrl/5,-rotrl/5,-rotfb/5),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(0,rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(5*sumthin)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(0*rad(10*sumthin),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-5*sumthin)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-90),rad(0),rad(180)) * CFrame.Angles(rad(-5),rad(0),rad(-40*rotrl)),animspeed*50)
+    elseif mode == "Demoralized" then
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)) * CFrame.Angles(rad(0*sumthin),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.8+rotrl/4,-.15) * CFrame.Angles(rad(0),rad(90),rad(-10)) * CFrame.Angles(rad(0),rad(0),0) * CFrame.Angles(-rotrl/5,-rotrl/5,rotfb/5),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.8-rotrl/4,-.15) * CFrame.Angles(rad(0),rad(-90),rad(10)) * CFrame.Angles(rad(0),rad(0),0) * CFrame.Angles(rotrl/5,-rotrl/5,-rotfb/5),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * angles(rad(-45),rad(10),rad(165)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-5*sumthin)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)) * CFrame.Angles(rad(-5),rad(0),rad(-40*rotrl)),animspeed*50)
+	elseif mode == "DEMORALIZATION" then
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-100),rad(0),rad(180)) * CFrame.Angles(rad(0*sumthin),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-.8+rotrl/4,-.15) * CFrame.Angles(rad(0),rad(90),rad(-10)) * CFrame.Angles(rad(0),rad(0),rad(10)) * CFrame.Angles(-rotrl/5,-rotrl/5,rotfb/5),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-.8-rotrl/4,-.15) * CFrame.Angles(rad(0),rad(-90),rad(10)) * CFrame.Angles(rad(0),rad(0),rad(-10)) * CFrame.Angles(rotrl/5,-rotrl/5,-rotfb/5),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * angles(rad(0),rad(0),rad(25)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-25)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-110),rad(0),rad(180)) * CFrame.Angles(rad(-5),rad(0),rad(-40*rotrl)),animspeed*50)
+	elseif mode == "Star" then
+         rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-100),rad(0),rad(180)) * CFrame.Angles(rad(0),rad(0),rad(0)),animspeed*50)
+        rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,-.1) * CFrame.Angles(rad(0),rad(90),rad(-10)) * CFrame.Angles(0,0,rotfb/5),animspeed*50)
+        lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,-.1) * CFrame.Angles(rad(0),rad(-90),rad(10)) * CFrame.Angles(0,0,-rotfb/5),animspeed*50)
+        rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(0,rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(15)),animspeed*50)
+        ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(0,rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-15)),animspeed*50)
+        nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-80),rad(0),rad(180)) * CFrame.Angles(rad(-5),rad(0),rad(-40*rotrl)),animspeed*50)
+        end
+        end
+    elseif hum.Sit == true then
+        if plr.UserId ~= 90745958 then
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-90),rad(0),rad(180)),animspeed*50)
+                rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(0),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(90)),animspeed*50)
+                lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(0),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(0),rad(-90)),animspeed*50)
+            rs.C0 = rs.C0:Lerp(CFrame.new(1,.5,0) * CFrame.Angles(rad(0),rad(90),rad(30)) * CFrame.Angles(rad(30),rad(0),rad(0)),animspeed*50)
+                ls.C0 = ls.C0:Lerp(CFrame.new(-1,.5,0) * CFrame.Angles(rad(0),rad(-90),rad(-30)) * CFrame.Angles(rad(30),rad(0),rad(0)),animspeed*50)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-95),rad(0),rad(180)),animspeed*50)
+        else
+            rutj.C0 = rutj.C0:Lerp(CFrame.new(0,0,0) * CFrame.Angles(rad(-105),rad(0),rad(180)),animspeed*50)
+                rh.C0 = rh.C0:Lerp(CFrame.new(1,-1,0) * CFrame.Angles(rad(15),rad(90),rad(0)) * CFrame.Angles(rad(0),rad(-20),rad(90)),animspeed*50)
+                lh.C0 = lh.C0:Lerp(CFrame.new(-1,-1,0) * CFrame.Angles(rad(15),rad(-90),rad(0)) * CFrame.Angles(rad(0),rad(20),rad(-90)),animspeed*50)
+            rs.C0 = rs.C0:Lerp(CFrame.new(.5,.2,-.3) * CFrame.Angles(rad(-10),rad(95),rad(30)) * CFrame.Angles(rad(25),rad(20),rad(0)),animspeed*50)
+                ls.C0 = ls.C0:Lerp(CFrame.new(-.5,.2,-.3) * CFrame.Angles(rad(-10),rad(-95),rad(-30)) * CFrame.Angles(rad(25),rad(-20),rad(0)),animspeed*50)
+            nec.C0 = nec.C0:Lerp(CFrame.new(0,1,0) * CFrame.Angles(rad(-75),rad(0),rad(180)),animspeed*50)
+        end
+    end
+    else
+    end
+    else
+        nec.C1 = nec.C1:Lerp(cf1,animspeed*50)
+        rutj.C1 = rutj.C1:Lerp(cf2,animspeed*50)
+        rs.C1 = rs.C1:Lerp(cf3,animspeed*50)
+        ls.C1 = ls.C1:Lerp(cf4,animspeed*50)
+        rh.C1 = rh.C1:Lerp(cf5,animspeed*50)
+        lh.C1 = lh.C1:Lerp(cf6,animspeed*50)
+    end
+    coroutine.resume(coroutine.create(function()
+        if not using and anim == "idle" then
+    if not lookinaround then
+        idlenum = idlenum +.005
+        if idlenum >= whenbored then
+            idlenum = 0
+            local oldws = hum.WalkSpeed
+            local oldjp = hum.JumpPower
+            hum.WalkSpeed = 0
+            hum.JumpPower = 0
+            rut.Anchored = true
+            rh.Part0 = nil
+            lh.Part0 = nil
+			rl.Anchored = true
+			ll.Anchored = true
+            using = true
+            lookinaround = true
+            wait(3)
+            hum.WalkSpeed = oldws
+            hum.JumpPower = oldjp
+            rut.Anchored = false
+            using = false
+            rh.Part0 = t
+            lh.Part0 = t
+			rl.Anchored = false
+			ll.Anchored = false
+            whenbored = math.random(2,6)
+            lookinaround = false
+        end
+    end
+elseif using then
+    idlenum = 0
+elseif anim ~= "idle" then
+    idlenum = 0
+end
+    end))
+    if lookinaround then
+    --Neck
+        nec.C1 = nec.C1:Lerp(cf1 * CFrame.new(0,0,0) * CFrame.Angles(sin(lchange/aa/1.5)*rad(10),cos(lchange/aa/1.5)*rad(5),-sin(lchange/aa/3)*rad(40)),.1)
+    --Humanoid Root Part
+        rutj.C1 = rutj.C1:Lerp(cf2 * CFrame.new(0,0,0) * CFrame.Angles(cos(lchange/aa/1.5)*rad(5),cos(lchange/aa/1.5)*rad(5),-sin(lchange/aa/3)*rad(20)),.1)
+    --Shoulders
+        rs.C1 = rs.C1:Lerp(cf3 * CFrame.new(-cos(lchange/aa/3)/(3*10),cos(lchange/aa/3)/(3*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(-sin(lchange/aa/3)*rad(12.5),-sin(lchange/aa/3)*rad(12.5),-sin(lchange/aa/3)*rad(15)),.1)
+        ls.C1 = ls.C1:Lerp(cf4 * CFrame.new(cos(lchange/aa/3)/(3*10),cos(lchange/aa/3)/(3*10),0) * CFrame.Angles(.1,0,0) * CFrame.Angles(sin(lchange/aa/3)*rad(12.5),-sin(lchange/aa/3)*rad(12.5),-sin(lchange/aa/3)*rad(15)),.1)
+    --Hips
+        rh.C1 = rh.C1:Lerp(cff5 * CFrame.new(0,0,0) * CFrame.Angles(0,0,0) * CFrame.Angles(0,0,0),.1)
+        lh.C1 = lh.C1:Lerp(cff6 * CFrame.new(0,0,0) * CFrame.Angles(0,0,0) * CFrame.Angles(0,0,0),.1)
+    end
+    swait()
+end
+end)
+anims()
+firewristbandeffects()
+print("Loaded successfully!")
+--End of script
