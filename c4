@@ -734,32 +734,6 @@ Tpos_Box_2.TextColor3 = Color3.new(1, 1, 1)
 Tpos_Box_2.TextSize = 20
 Tpos_Box_2.TextWrapped = true
 
-Toggle_Chat_Button.Name = "Toggle_Chat_Button"
-Toggle_Chat_Button.Parent = Header
-Toggle_Chat_Button.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
-Toggle_Chat_Button.BorderColor3 = Color3.new(0, 0, 0)
-Toggle_Chat_Button.BorderSizePixel = 0
-Toggle_Chat_Button.Position = UDim2.new(0.0579999983, 0, 5.26666689, 0)
-Toggle_Chat_Button.Size = UDim2.new(0, 97, 0, 35)
-Toggle_Chat_Button.Font = Enum.Font.Arcade
-Toggle_Chat_Button.Text = "Toggle Chat"
-Toggle_Chat_Button.TextColor3 = Color3.new(1, 1, 1)
-Toggle_Chat_Button.TextSize = 20
-Toggle_Chat_Button.TextWrapped = true
-
-Chat_Toggle_Label.Name = "Chat_Toggle_Label"
-Chat_Toggle_Label.Parent = Header
-Chat_Toggle_Label.BackgroundColor3 = Color3.new(1, 1, 1)
-Chat_Toggle_Label.BackgroundTransparency = 0.89999997615814
-Chat_Toggle_Label.BorderColor3 = Color3.new(1, 1, 1)
-Chat_Toggle_Label.Position = UDim2.new(0.540000021, 0, 5.26666689, 0)
-Chat_Toggle_Label.Size = UDim2.new(0, 94, 0, 35)
-Chat_Toggle_Label.Font = Enum.Font.Arcade
-Chat_Toggle_Label.Text = "~»False«~"
-Chat_Toggle_Label.TextColor3 = Color3.new(1, 1, 1)
-Chat_Toggle_Label.TextScaled = true
-Chat_Toggle_Label.TextSize = 14
-Chat_Toggle_Label.TextWrapped = true
 
 Current_Song_Label.Name = "Current_Song_Label"
 Current_Song_Label.Parent = Header
@@ -800,21 +774,3 @@ Set_Text_Button.MouseButton1Down:Connect(function()
 	text.Text = "~»"..Tpos_Box_2.Text.."«~"
 end)
 
-Toggle_Chat_Button.MouseButton1Down:Connect(function()
-if ischatting == false then
-ischatting = true
-Chat_Toggle_Label.Text = "~»True«~"
-spawn(function()
-game.Players.LocalPlayer.Chatted:connect(function(msg)
-for i = 0, msg:len(), 1 do
-	text.Text = "~»"..msg:sub(0, i).."«~"
-end
-wait(3)
-text.Text = "~»Fell Apart AF«~"
-end)
-end)
-else
-ischatting = false
-Chat_Toggle_Label.Text = "~»False«~"
-end
-end)
