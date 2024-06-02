@@ -1,5 +1,4 @@
 
-
 local S = setmetatable({},{__index = function(s,i) return game:service(i) end})
 local CF = {N=CFrame.new,A=CFrame.Angles,fEA=CFrame.fromEulerAnglesXYZ}
 local C3 = {N=Color3.new,RGB=Color3.fromRGB,HSV=Color3.fromHSV,tHSV=Color3.toHSV}
@@ -1756,7 +1755,7 @@ for i = 1, #ATTACKS do
 end
 
 local sick = IT("Sound", Torso)
-sick.SoundId = "rbxassetid://"..SONG1
+sick.SoundId = SONG1
 sick.TimePosition = 0
 sick.Looped = true
 sick.Pitch = 1
@@ -2042,7 +2041,6 @@ for i, v in pairs(NeonParts) do
 for i = 1, 10 do
 	local FACE = CreatePart(3, faceShadingFolder, "Neon", 0, 0+(i-1)/10.2, "Dark stone grey", "FaceGradient", VT(1.01,0.65,1.01),false)
 	FACE.Color = C3(0,0,0)
-	Head:FindFirstChildOfClass("SpecialMesh"):Clone().Parent = FACE
 	CreateWeldOrSnapOrMotor("Weld", FACE, Head, FACE, CF(0,0.28-(i-1)/30,0), CF(0, 0, 0))
 	spawn(function() Rainbowify(FACE) end)
 end
@@ -3537,16 +3535,16 @@ function KeyDown(Key)
 		tecks2.Text = "Chara?"
 	end
 	if Key == "4" and ATTACK == false then
-		SONG1 = 580288014
+		SONG1 = getsynasset("comet.mp3")
 		sick.TimePosition = 0
 		Speed = 20
 		Weapon.Parent = Character
 		BanishMode = 211
 		Jump = 50
-		tecks2.Text = "榜样罗布"
+		tecks2.Text = "Comet"
 	end
 	if Key == "5" and ATTACK == false then
-		SONG1 = 2962282638
+		SONG1 = 3900917475
 		sick.TimePosition = 0
 		Speed = 20
 		Weapon.Parent = Character
@@ -4048,9 +4046,10 @@ elseif ATTACK == false and BanishMode == 211 then
 		Disable_Jump = true
 		Humanoid.WalkSpeed = 0
 	end
-	sick.SoundId = "rbxassetid://"..SONG1
+
+	sick.SoundId = SONG1
 	sick.Looped = true
-	Humanoid.Name = "whenyoubruhmomentlmao"
+	Humanoid.Name = "Humanoid"
 	Humanoid.JumpPower = Jump
 	Humanoid.UseJumpPower = true
 	Head.Parent = Character
