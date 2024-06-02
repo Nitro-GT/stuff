@@ -5269,7 +5269,7 @@ function h3ll()
 	ATTACK = true
 	Rooted = true
 	MODE = "HELL"
-	sick.SoundId = 'rbxassetid://693163614'
+	sick.SoundId = getcustomasset("badt.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.95
 	sick.TimePosition = 0
