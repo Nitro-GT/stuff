@@ -3710,39 +3710,6 @@ local clerp = Clerp
 
 
 
-game.Players.LocalPlayer.Character["SpikeCircle1"].Handle.AccessoryWeld:Destroy()
-game.Players.LocalPlayer.Character["K4LAS Mercenary [Front]"].Handle.AccessoryWeld:Destroy()
-
-
-
-PositionOffsetgun = Vector3.new(0, -1.65, -0.5)
-RotationOffsetgun = Vector3.new(-270, 0, 180)
-RotationOffsetgun = CFrame.Angles(
-	math.rad(RotationOffsetgun.X),
-	math.rad(RotationOffsetgun.Y),
-	math.rad(RotationOffsetgun.Z)
-)
-
-CFrameOffsetgun = CFrame.new(PositionOffsetgun)*RotationOffsetgun
-
-weld = Instance.new("Weld")
-weld.C1 = CFrameOffsetgun
-weld.Parent = game.Players.LocalPlayer.Character["K4LAS Mercenary [Front]"].Handle
-weld.Part0 = game.Players.LocalPlayer.Character["K4LAS Mercenary [Front]"].Handle
-weld.Part1 = game.Players.LocalPlayer.Character["Right Arm"]
-
-
-welds = Instance.new("Weld")
-welds.Parent = game.Players.LocalPlayer.Character["SpikeCircle1"].Handle
-welds.Part0 = game.Players.LocalPlayer.Character["SpikeCircle1"].Handle
-welds.Part1 = game.Players.LocalPlayer.Character["Finding Lost"].Aura
-
-
-for i,v in next, game.Players.LocalPlayer.Character["Finding Lost"]:GetDescendants() do
-	if v:IsA("Part") then
-		v.Transparency = 1
-end
-end
 
 
 
