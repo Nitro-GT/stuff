@@ -5064,7 +5064,7 @@ function katana()
 	Rooted = true
 	mainIntro()
 	MODE = "Katana"
-	sick.SoundId = "rbxassetid://1237507010"
+	sick.SoundId =getcustomasset("element.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.87
 	sick.TimePosition = 0
