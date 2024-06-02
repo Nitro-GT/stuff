@@ -592,7 +592,7 @@ end)
 local Chill_Gui_Bro = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 local Header = Instance.new("Frame")
 local BackGround = Instance.new("Frame")
-local Chill_Gui_Label = Instance.new("TextLabel")
+
 local Play_ID_Button = Instance.new("TextButton")
 local ID_Box = Instance.new("TextBox")
 local Set_Vol_Button = Instance.new("TextButton")
@@ -619,6 +619,7 @@ Header.Selectable = true
 Header.Position = UDim2.new(0.469539374, 0, 0.147921771, 0)
 Header.Size = UDim2.new(0, 250, 0, 45)
 Header.Draggable = true
+	
 BackGround.Name = "BackGround"
 BackGround.Parent = Header
 BackGround.BackgroundColor3 = Color3.new(0.196078, 0.196078, 0.196078)
@@ -627,19 +628,7 @@ BackGround.Draggable = true
 BackGround.Position = UDim2.new(0, 0, 1, 0)
 BackGround.Size = UDim2.new(0, 250, 0, 299)
 
-Chill_Gui_Label.Name = "Chill_Gui_Label"
-Chill_Gui_Label.Parent = Header
-Chill_Gui_Label.BackgroundColor3 = Color3.new(1, 1, 1)
-Chill_Gui_Label.BackgroundTransparency = 1
-Chill_Gui_Label.BorderSizePixel = 0
-Chill_Gui_Label.Draggable = true
-Chill_Gui_Label.Size = UDim2.new(0, 250, 0, 45)
-Chill_Gui_Label.Font = Enum.Font.Arcade
-Chill_Gui_Label.Text = "~»Chill Gui«~"
-Chill_Gui_Label.TextColor3 = Color3.new(1, 1, 1)
-Chill_Gui_Label.TextScaled = true
-Chill_Gui_Label.TextSize = 14
-Chill_Gui_Label.TextWrapped = true
+
 
 Play_ID_Button.Name = "Play_ID_Button"
 Play_ID_Button.Parent = Header
@@ -787,15 +776,12 @@ Current_Song_Label.TextSize = 14
 Current_Song_Label.TextWrapped = true
 
 Play_ID_Button.MouseButton1Down:Connect(function()
-if tonumber(ID_Box.Text) then
 	Chillmusic:Stop()
 	Chillmusic.SoundId=getycustomasset(ID_Box.Text)
 	Chillmusic:Play()
-	text.Text = "~»Chill Af«~ Now Playing: "..currentsong
-	Current_Song_Label.Text = "~»Current Song: "..currentsong.."«~"
+	text.Text = "~»Chill Af«~"
 wait(4)
 text.Text = "~»Fell Apart AF«~"
-end
 end)
 local ischatting = false
 
