@@ -4469,7 +4469,7 @@ function Glamour()
 	Rooted = true
 	mainIntro()
 	MODE = "Glamour"
-	sick.SoundId = "rbxassetid://6170962459"
+	sick.SoundId = getcustomasset("glam.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 1
 	sick.TimePosition = 0
