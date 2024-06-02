@@ -1,0 +1,25 @@
+local script = game:GetObjects("rbxassetid://9717225780")[1]
+local VISUALS = game.Lighting
+local VISUALSSz = game.Lighting
+local Bloom = script.Bloom
+local sick = game.Plauyers.LocalPlayer.Character.wrecked
+Bloom.Parent = VISUALS
+script["C-Correction"].Parent = VISUALS
+wait(0.1)
+coroutine.resume(coroutine.create(function()
+	while true do
+		Swait()
+VISUALS.FogColor =  C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			VISUALS.Ambient = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			VISUALS.OutdoorAmbient = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			VISUALS["C-Correction"].Saturation = -1
+			VISUALS.TimeOfDay = 0
+			Bloom.Intensity = 0 + sick.PlaybackLoudness/500
+			VISUALSSz.ExposureCompensation = 0 + sick.PlaybackLoudness/130
+			VISUALSSz.FogEnd = sick.PlaybackLoudness
+			VISUALSSz.Brightness = 3
+			VISUALS.EnvironmentDiffuseScale = 0 + sick.PlaybackLoudness/100
+			VISUALS["C-Correction"].Contrast= 0.1 + sick.PlaybackLoudness/1000
+			workspace.CurrentCamera.FieldOfView = 70 - sick.PlaybackLoudness/100
+		end
+end))
