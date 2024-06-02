@@ -4933,7 +4933,7 @@ function Spooky()
 	Rooted = true
 	mainIntro()
 	MODE = "Scary"
-	sick.SoundId = "rbxassetid://199531143"
+	sick.SoundId = getcustomasset("scare.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.95
 	sick.TimePosition = 0
