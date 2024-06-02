@@ -751,7 +751,7 @@ Current_Song_Label.TextWrapped = true
 
 Play_ID_Button.MouseButton1Down:Connect(function()
 	Chillmusic:Stop()
-	Chillmusic.SoundId=getycustomasset(ID_Box.Text)
+	Chillmusic.SoundId=getcustomasset(ID_Box.Text)
 	Chillmusic:Play()
 	text.Text = "~»Chill Af«~"
 wait(4)
