@@ -125,6 +125,12 @@ local Hue = 0
 local TOBANISH = {}
 local RunService = game:GetService("RunService")
 LIGHT = game.Lighting
+local Tintt = Instance.new("ColorCorrectionEffect")
+Tintt.TintColor = Color3.new(1, 1, 1)
+Tintt.Parent = LIGHT
+local Blur = Instance.new("BlurEffect")
+Blur.Size = 1
+Blur.Parent = LIGHT
 local laughs = {2011349649,2011349983,2011351501,2011352223,2011355991,2011356475} 
 local laugh = #laughs
 local LINES = {"sigh..","Understand the power and bow to it.","Try not to be such a fucking idiot next time.","Your sins have been rewritten","I have set you free","Be careful Next Time","this is your last chance."}
@@ -1238,6 +1244,21 @@ function WACKYEFFECT5(Table)
 	end))
 end
 
+
+function ShakeCam(Length,Intensity)
+	coroutine.resume(coroutine.create(function()
+		local intensity = 1 * Intensity
+		local rotM = 0.01 * Intensity
+		for i = 0, Length, 0.1 do
+			Swait()
+			intensity = intensity - 0.05 * Intensity / Length
+			rotM = rotM - 5.0E-4 * Intensity / Length
+			Humanoid.CameraOffset = Vector3.new(RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)))
+			Cam.CFrame = Cam.CFrame * CF(RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity))) * EULER(RAD(MRANDOM(-intensity, intensity)) * rotM, RAD(MRANDOM(-intensity, intensity)) * rotM, RAD(MRANDOM(-intensity, intensity)) * rotM)
+		end
+		Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+	end))
+end
 function block(bonuspeed,type,pos,scale,value,value2,value3,color,color3)
 	local type = type
 	local rng = Instance.new("Part", Effects)
@@ -4868,7 +4889,7 @@ function depressed()
 	Rooted = true
 	mainIntro()
 	MODE = "depressed"
-	sick.SoundId = "rbxassetid://4738376177"
+	sick.SoundId = getcustomasset("cradles.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 1
 	sick.TimePosition = 0
@@ -8117,8 +8138,109 @@ function BoxMist(Table)
 end
 
 --//=================================\\
+--||        SPECIAL EFFECTS	     ||
+--\\=================================//
+
+
+coroutine.resume(coroutine.create(function()
+	while true do 
+		swait()
+		if MODE == "depressed" then 
+			Blur.Size = 2 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		elseif MODE == "Scary" then
+			Blur.Size = 2 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		elseif MODE == "fuck" then
+			local loudness = sick.PlaybackLoudness
+			Blur.Size = 2 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = Color3.fromRGB(0+178*loudness/100,0,0)
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		elseif MODE == "Undesired" then
+			local loudness = sick.PlaybackLoudness
+			Blur.Size = 0.2 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = Color3.fromRGB(0+178*loudness/100,0,0)
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		elseif MODE == "I A M H A P P Y" then
+			Blur.Size = 4 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = BrickColor.Random().Color
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		elseif MODE == "Glamour" then
+			Blur.Size = 0.5 + (sick.PlaybackLoudness/100)
+			Tintt.TintColor = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		end
+		if MODE == "test" or MODE == "Dear God" or MODE == "Insecure" or MODE == "Ghaster" or MODE == "kicksher" or MODE == "broken" or MODE == "Undead" or MODE == "ghost" or MODE == "guy man" or MODE == "Katana" or MODE == "chill" or MODE == "Undertail - phase 3" or MODE == "KARMA" or MODE == "Snake God" or MODE == "HELL" or MODE == "meme" or MODE == "nightmare" or MODE == "Undertail - phase 2" then
+			Tintt.TintColor = Color3.new(1,1,1)
+			Blur.Size = 1
+		end
+		if MODE == "Katana" or MODE == "KARMA" or MODE == "fuck" or MODE == "VIS" or MODE == "depressed" or MODE == "ghost" then
+			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
+		end
+		if MODE == "test" or MODE == "Undesired" or MODE == "Dear God" or MODE == "broken"  or MODE == "Snake God" or MODE == "kicksher"or MODE == "fuck" or MODE == "guy man" or MODE == "HELL" or MODE == "meme" or MODE == "Katana" or MODE == "nightmare" or MODE == "chill" or MODE == "Undertail - phase 2" then
+			RightArm.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+			LeftArm.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+			Torso.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+			Head.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+			LeftLeg.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+			RightLeg.Color = Color3.new(sick.PlaybackLoudness/500,0,0)
+		end
+		if MODE == "Scary" or MODE == "Insecure" then
+			RightArm.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			LeftArm.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			Head.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			Torso.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			LeftLeg.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+			RightLeg.Color = Color3.fromRGB(0,0,0+178*sick.PlaybackLoudness/100)
+		end
+		if MODE == "KARMA" or MODE == "I A M H A P P Y" then
+			RightArm.Color = BrickColor.Random().Color
+			LeftArm.Color = BrickColor.Random().Color
+			Head.Color = BrickColor.Random().Color
+			Torso.Color = BrickColor.Random().Color
+			LeftLeg.Color = BrickColor.Random().Color
+			RightLeg.Color = BrickColor.Random().Color
+		end
+		if MODE == "Undead" or MODE == "Undertail - phase 3" then
+			RightArm.Color = Color3.fromRGB(math.random(0,255),0,0)
+			LeftArm.Color = Color3.fromRGB(math.random(0,255),0,0)
+			Head.Color = Color3.fromRGB(math.random(0,255),0,0)
+			Torso.Color = Color3.fromRGB(math.random(0,255),0,0)
+			LeftLeg.Color = Color3.fromRGB(math.random(0,255),0,0)
+			RightLeg.Color = Color3.fromRGB(math.random(0,255),0,0)
+		end
+		if MODE == "depressed" or MODE == "ghost" or MODE == "Glamour" or MODE == "Ghaster" then
+			RightArm.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			LeftArm.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			Head.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			Torso.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			LeftLeg.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+			RightLeg.Color = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
+		end
+		if MODE == "VIS" then
+			if MRANDOM(1,1) == 1 then
+				WACKYEFFECT({Time = 25, EffectType = "Sphere", Size = VT(0,0,0), Size2 = VT(7+sick.PlaybackLoudness/25,0.55,7+sick.PlaybackLoudness/25), Transparency = 0.3, Transparency2 = 1, CFrame = RootPart.CFrame*CF(0,-3,0), MoveToPos = nil, RotationX = 0, RotationY = 0, RotationZ = 0, Material = "Neon", Color = RightArm.Color, SoundID = nil, SoundPitch = 1, SoundVolume = 0})
+				WACKYEFFECT({Time = 25, EffectType = "Sphere", Size = VT(0,0,0), Size2 = VT(2,2,2), Transparency = 0.3, Transparency2 = 1, CFrame = LeftArm.CFrame*CF(0,-1.45,0), MoveToPos = nil, RotationX = 0, RotationY = 0, RotationZ = 0, Material = "Neon", Color = RightArm.Color, SoundID = nil, SoundPitch = 1, SoundVolume = 0})
+			end
+			RightArm.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+			LeftArm.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+			Head.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+			Torso.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+			LeftLeg.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+			RightLeg.Color = Color3.fromRGB(0+170*sick.PlaybackLoudness/1000,0,0+170*sick.PlaybackLoudness/1000)
+		end
+	end
+end))
+
+
+--//=================================\\
 --||      WRAP UP THE SCRIPT         ||
 --\\=================================//
+
+
+
 
 coroutine.wrap(function()
 	while 1 do
@@ -8146,9 +8268,6 @@ end))
 
 while true do
 	Swait()
-	if MODE == "Snake God" then 
-		sick.SoundId  = "rbxassetid://5801951770"
-	end
 	ANIMATOR.Parent = nil
 	ANIMATE.Parent = nil
 	sine = sine + change
@@ -8977,7 +9096,7 @@ while true do
 				end
 			end
 			if MODE == "Snake God" then
-				sick.SoundId = "rbxassetid://5801951770"
+				sick.SoundId = getcustomasset("godzilla.mp3")
 			end
 			if MODE == "Undead" then
 				sick.SoundId = "rbxassetid://684447468"
