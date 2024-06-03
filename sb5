@@ -1244,6 +1244,21 @@ function WACKYEFFECT5(Table)
 	end))
 end
 
+
+function ShakeCam(Length,Intensity)
+	coroutine.resume(coroutine.create(function()
+		local intensity = 1 * Intensity
+		local rotM = 0.01 * Intensity
+		for i = 0, Length, 0.1 do
+			Swait()
+			intensity = intensity - 0.05 * Intensity / Length
+			rotM = rotM - 5.0E-4 * Intensity / Length
+			Humanoid.CameraOffset = Vector3.new(RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)))
+			Cam.CFrame = Cam.CFrame * CF(RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity)), RAD(MRANDOM(-intensity, intensity))) * EULER(RAD(MRANDOM(-intensity, intensity)) * rotM, RAD(MRANDOM(-intensity, intensity)) * rotM, RAD(MRANDOM(-intensity, intensity)) * rotM)
+		end
+		Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+	end))
+end
 function block(bonuspeed,type,pos,scale,value,value2,value3,color,color3)
 	local type = type
 	local rng = Instance.new("Part", Effects)
