@@ -8129,7 +8129,7 @@ end
 
 coroutine.resume(coroutine.create(function()
 	while true do 
-		rswait()
+		swait()
 		if MODE == "depressed" then 
 			Blur.Size = 2 + (sick.PlaybackLoudness/100)
 			Tintt.TintColor = C3(math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500),math.min(1,sick.PlaybackLoudness/500))
