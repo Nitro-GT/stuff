@@ -5066,7 +5066,7 @@ function NIGHTMARE()
 	Rooted = true
 	mainIntro()
 	MODE = "nightmare"
-	sick.SoundId = "rbxassetid://5541841785"
+	sick.SoundId = getcustomasset("spring.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.8
 	ATTACK = false
