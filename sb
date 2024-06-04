@@ -8167,10 +8167,6 @@ coroutine.resume(coroutine.create(function()
 			Blur.Size = 0.2 + (sick.PlaybackLoudness/100)
 			Tintt.TintColor = Color3.fromRGB(0+178*loudness/100,0,0)
 			ShakeCam(sick.PlaybackLoudness/75,sick.PlaybackLoudness/75)
-		elseif MODE == "Katana" then
-			local loudness = sick.PlaybackLoudness
-			Blur.Size = 0.2 + (sick.PlaybackLoudness/100)
-			Tintt.TintColor = Color3.fromRGB(0+178*loudness/100,0,0)
 		elseif MODE == "I A M H A P P Y" then
 			Blur.Size = 4 + (sick.PlaybackLoudness/100)
 			Tintt.TintColor = BrickColor.Random().Color
