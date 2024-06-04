@@ -4934,7 +4934,7 @@ function Undesired()
 	MODE = "Undesired"
 	sick.SoundId = getcustomasset("cantfix.mp3")
 	sick.Volume = 10
-	sick.PlaybackSpeed = 1.1
+	sick.PlaybackSpeed = .9
 	sick.TimePosition = 0
 	ATTACK = false
 	Rooted = false
