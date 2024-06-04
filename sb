@@ -4932,7 +4932,7 @@ function Undesired()
 	Rooted = true
 	mainIntro()
 	MODE = "Undesired"
-	sick.SoundId = "rbxassetid://6149823380"
+	sick.SoundId = getcustomasset("cantfix.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 1.1
 	sick.TimePosition = 0
@@ -5235,7 +5235,7 @@ end
 function karma()
 	ATTACK = true
 	Rooted = true
-	sick.SoundId = "rbxassetid://3718415720"
+	sick.SoundId =  getcustomasset("karma.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.95
 	chatfunc("corruption event..")
@@ -5268,7 +5268,7 @@ function karma()
 		RightHip.C0 = Clerp(RightHip.C0, CF(1, -0.5, -0.5) * ANGLES(RAD(0), RAD(0), RAD(0)) * ANGLES(RAD(0), RAD(90), RAD(0)), 0.35 / Animation_Speed)
 		LeftHip.C0 = Clerp(LeftHip.C0, CF(-1, -1 , 0) * ANGLES(RAD(-60), RAD(0), RAD(0)) * ANGLES(RAD(0), RAD(-90), RAD(0)), 0.35 / Animation_Speed)
 	end
-	sick.SoundId = 'rbxassetid://3718415720'
+	sick.SoundId = getcustomasset("karma.mp3")
 	sick.Volume = 10
 	sick.PlaybackSpeed = 0.95
 	sick.Volume = 10
