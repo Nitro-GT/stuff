@@ -1,4 +1,4 @@
-
+local getsynasset = getcustomasset
 local script = game:GetObjects("rbxassetid://8403394444")[1]
 wait(0.2)
 game:GetService("RunService").RenderStepped:Wait()
