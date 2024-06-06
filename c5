@@ -729,7 +729,7 @@ Tpos_Box_2.BorderSizePixel = 0
 Tpos_Box_2.Position = UDim2.new(0.356000006, 0, 4.22222233, 0)
 Tpos_Box_2.Size = UDim2.new(0, 140, 0, 35)
 Tpos_Box_2.Font = Enum.Font.Arcade
-Tpos_Box_2.Text = "Text"
+Tpos_Box_2.Text = "Volume"
 Tpos_Box_2.TextColor3 = Color3.new(1, 1, 1)
 Tpos_Box_2.TextSize = 20
 Tpos_Box_2.TextWrapped = true
@@ -771,6 +771,6 @@ end)
 
 Set_Text_Button.MouseButton1Down:Connect(function()
 
-	text.Text = "~»"..Tpos_Box_2.Text.."«~"
+	Chillmusic.Volume = tonumber(Tpos_Box_2.Text)
 end)
 
