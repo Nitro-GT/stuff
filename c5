@@ -677,7 +677,7 @@ Vol_Box.BorderSizePixel = 0
 Vol_Box.Position = UDim2.new(0.356000006, 0, 2.20000005, 0)
 Vol_Box.Size = UDim2.new(0, 140, 0, 35)
 Vol_Box.Font = Enum.Font.Arcade
-Vol_Box.Text = "Volume"
+Vol_Box.Text = "Speed"
 Vol_Box.TextColor3 = Color3.new(1, 1, 1)
 Vol_Box.TextSize = 35
 Vol_Box.TextWrapped = true
@@ -761,7 +761,7 @@ local ischatting = false
 
 Set_Vol_Button.MouseButton1Down:Connect(function()
 
-	Chillmusic.Volume = tonumber(Vol_Box.Text)
+	Chillmusic.PlaybackSpeed = tonumber(Vol_Box.Text)
 end)
 
 Set_Tpos_Button.MouseButton1Down:Connect(function()
