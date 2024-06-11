@@ -1,1 +1,1 @@
-game.Players.LocalPlayer.Character.Freecam.Enabled = not game.Players.LocalPlayer.Character.Freecam.Enabled game.Players.LocalPlayer.Character.Freecam.Enabled = not game.Players.LocalPlayer.Character.Freecam.Enabled 
+game.Players.LocalPlayer.Character.Freecam.Enabled = not game.Players.LocalPlayer.Character.Freecam.Enabled 
