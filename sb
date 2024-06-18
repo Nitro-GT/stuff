@@ -1,9 +1,7 @@
 local getsynasset = getcustomasset
 local script = game:GetObjects("rbxassetid://8403394444")[1]
 _G.SBV4R = true
-wait(0.2)
 game:GetService("RunService").RenderStepped:Wait()
-wait(0.111111156)
 MRANDOM = math.random
 CF = CFrame.new
 ANGLES = CFrame.Angles
