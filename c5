@@ -416,6 +416,7 @@ local weldBetween = function(a, b)
 	weldd.Parent = a
 	return weldd
 end
+local script = Instance.new("LocalScript")
 ArtificialHB = Instance.new("BindableEvent", script)
 ArtificialHB.Name = "Heartbeat"
 script:WaitForChild("Heartbeat")
@@ -773,4 +774,4 @@ Set_Text_Button.MouseButton1Down:Connect(function()
 
 	Chillmusic.Volume = tonumber(Tpos_Box_2.Text)
 end)
-
+local stopeverything = nil
