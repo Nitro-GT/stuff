@@ -4890,8 +4890,8 @@ function depressed()
 	MODE = "depressed"
 	sick.SoundId = getcustomasset("cradles.mp3")
 	sick.Volume = 10
-	sick.PlaybackSpeed = .85
-	sick.TimePosition = 45
+	sick.PlaybackSpeed = .75
+	sick.TimePosition = 0
 	chatfunc(PP[MRANDOM(1, #PP)], Head, 10, 0.9)
 	ATTACK = false
 	Rooted = false
