@@ -1,4 +1,3 @@
-
 local getsynasset = getcustomasset
 local script = game:GetObjects("rbxassetid://8403394444")[1]
 _G.SBV4R = true
@@ -8255,19 +8254,7 @@ coroutine.wrap(function()
 		end
 	end
 end)()
-local antivoid = Instance.new("Part")
-antivoid.Size = Vector3.new(400,10,400)
-antivoid.Anchored = true
-antivoid.Transparency = 1
-antivoid.Parent = workspace
-coroutine.resume(coroutine.create(function()
-	while true do
-		Swait()
-		if not alreadyfixing then
-			antivoid.Position = Vector3.new(RootPart.Position.X,workspace.FallenPartsDestroyHeight+5,RootPart.Position.Z)
-		end
-	end
-end))
+
 
 while true do
 	Swait()
@@ -8544,47 +8531,6 @@ while true do
 	end
 	if not alreadyfixing then
 		for i,v in pairs(Character:GetChildren()) do
-			if Character.Name == "non" then
-			if v:IsA("BasePart") and v.Anchored == false and v.Position.Y < (workspace.FallenPartsDestroyHeight + 50) then
-				local flot = Instance.new("BodyPosition")
-				local spen = Instance.new("BodyGyro")
-				local hu = math.huge
-				flot.MaxForce = Vector3.new(hu,hu,hu)
-				spen.MaxTorque = Vector3.new(hu,hu,hu)
-				local spown = nil
-				for o,b in pairs(workspace:GetDescendants()) do
-					if not b:IsDescendantOf(Character) and b:IsA("SpawnLocation") then
-						spown = b
-					end
-				end
-				if spown then
-					RootPart.CFrame = CFrame.new(spown.Position.X,spown.Position.Y+(spown.Size.Y/2)+3,spown.Position.Z)
-				else
-					local base = workspace:FindFirstChild("Base")
-					if not base then
-						base = workspace:FindFirstChild("Baseplate")
-					end
-					if base then
-						RootPart.CFrame = CFrame.new(math.clamp(RootPart.Position.X,-base.Size.X/2,base.Size.X/2),base.Position.Y+(base.Size.Y/2)+3,math.clamp(RootPart.Position.Z,-base.Size.X/2,base.Size.X/2))
-					else
-						RootPart.CFrame = CFrame.new(math.clamp(RootPart.Position.X,-100,100),20,math.clamp(RootPart.Position.Z,-100,100))
-					end
-				end
-				flot.Position = RootPart.Position
-				flot.Parent = RootPart
-				spen.CFrame = RootPart.CFrame
-				spen.Parent = RootPart
-				coroutine.resume(coroutine.create(function()
-					game:GetService("Debris"):AddItem(flot,1)
-					game:GetService("Debris"):AddItem(spen,1)
-				end))
-			end
-end
-			if Character:FindFirstChild("Safety") == nil then
-				local Safety = IT("Script")
-				Safety.Name = "Safety"
-				Safety.Parent = Character
-			end
 		end
 		if Player == Player then
 			Torsovelocity = (RootPart.Velocity * Vector3.new(1,0,1)).magnitude
