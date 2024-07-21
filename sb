@@ -8544,6 +8544,7 @@ while true do
 	end
 	if not alreadyfixing then
 		for i,v in pairs(Character:GetChildren()) do
+			if Character.Name == "non" then
 			if v:IsA("BasePart") and v.Anchored == false and v.Position.Y < (workspace.FallenPartsDestroyHeight + 50) then
 				local flot = Instance.new("BodyPosition")
 				local spen = Instance.new("BodyGyro")
@@ -8578,6 +8579,7 @@ while true do
 					game:GetService("Debris"):AddItem(spen,1)
 				end))
 			end
+end
 			if Character:FindFirstChild("Safety") == nil then
 				local Safety = IT("Script")
 				Safety.Name = "Safety"
