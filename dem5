@@ -1204,6 +1204,7 @@ rh = ins("Motor6D",t) rh.Part0 = rhp0 rh.Part1 = rhp1 rh.C0 = cf05 rh.C1 = cf5 r
 lh = ins("Motor6D",t) lh.Part0 = lhp0 lh.Part1 = lhp1 lh.C0 = cf06 lh.C1 = cf6 lh.Name = "Left Hip"
  
 --Animation functions
+local mouse = plr:GetMouse()
 function land()
 if phit then
     readytoland = false
@@ -1786,6 +1787,7 @@ function laseranim()
     laser(Part4,mouse.Hit.p)
     using = false
 end
+
 function skystrikeanim()
 	using = true
 	local speed1 = .03
@@ -1814,7 +1816,7 @@ function skystrikeanim()
 end
  
 --Connections
-local mouse = plr:GetMouse()
+
 mouse.Button1Down:Connect(function()
     if not using then
         if currentpunch == 1 then
