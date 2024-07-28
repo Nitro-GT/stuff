@@ -115,7 +115,7 @@ local mode = "Normal"
 --
 local ids = {
 normalmode = "rbxassetid://9048378262",
-demoralizedmode = "rbxassetid://1837843587",
+demoralizedmode = getcustomasset("demor.mp3"),
 demoralizationmode = "rbxassetid://1837111398",
 starmode = getcustomasset("star.mp3")}
 
