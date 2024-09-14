@@ -802,7 +802,7 @@ local ischatting = false
 
 Set_Vol_Button.MouseButton1Down:Connect(function()
 
-	Chillmusic.Volume = tonumber(Vol_Box.Text)
+	Chillmusic.PlaybackSpeed = tonumber(Vol_Box.Text)
 end)
 
 Set_Tpos_Button.MouseButton1Down:Connect(function()
