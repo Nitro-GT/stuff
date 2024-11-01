@@ -591,6 +591,7 @@ end)
 -- Objects
 
 local Chill_Gui_Bro = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+Chill_Gui_Bro.ResetOnSpawn = false
 local Header = Instance.new("Frame")
 local BackGround = Instance.new("Frame")
 
