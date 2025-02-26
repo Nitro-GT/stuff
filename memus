@@ -1,5 +1,5 @@
 function LoadLibrary(a)
-	return loadstring(game:HttpGet("https://pastebin.com/raw/UfzKgS6T", true))()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/Nitro-GT/loadlibrary/refs/heads/main/main", true))()
 end
 
 local FavIDs = {
