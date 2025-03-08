@@ -28,6 +28,7 @@ function LegController.new(Character : Model, Configuration : any)
 	-- Important variables --
 	local Humanoid = Character:WaitForChild("Humanoid")
 	
+	local rootJoint = Humanoid.RootPart:WaitForChild("RootJoint")
 	local leftHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "LeftHip" or "Left Hip", true)
 	local rightHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "RightHip" or "Right Hip", true)
 	
@@ -37,6 +38,7 @@ function LegController.new(Character : Model, Configuration : any)
 	}
 	
 	local motor6D = {
+		rootJoint = rootJoint.C0,
 		Hips = {
 			["LeftHip"] = leftHip.C0,
 			["RightHip"] = rightHip.C0,
