@@ -1,125 +1,48 @@
--- Services --
 local RunService = game:GetService("RunService")
--- Modules / Direcotires --
-local InverseKinematics = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nitro-GT/stuff/refs/heads/main/ik2"))()
-local Trove = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nitro-GT/stuff/refs/heads/main/ik1"))()
-local LegController = {}
-LegController.__index = LegController
-local ikAttachments = {
-	["leftHip"] = CFrame.new(-0.466, -0.944, 0),
-	["leftFoot"] = CFrame.new(-0.5, -2.9, 0),
-	["rightHip"] = CFrame.new(0.5, -0.944, 0),
-	["rightFoot"] = CFrame.new(0.5, -2.9, 0)
+local LEFT_HIP_CFRAME = CFrame.new(-0.5, -1, 0)
+local RIGHT_HIP_CFRAME = CFrame.new(0.5, -1, 0)
+local CFRAME_ANGLES_PI = CFrame.Angles(0, math.pi, 0)
+type IKLegType = {
+	-- Runtime
+	_Torso: BasePart,
+	_Hip: Motor6D,
+	
+	-- Constants
+	_HipC0Cache: CFrame,
+	_TransformResetLoop: RBXScriptConnection
 }
-local function nilContentsExist(Tbl : any)
-	for Index, Val in pairs(Tbl) do
-		if Val == nil then
-			return true
-		end
-	end
+local IKLeg = {}
+IKLeg.__index = IKLeg
+function IKLeg.new(character, side: "Left" | "Right")
+	local self = setmetatable({} :: IKLegType, IKLeg)
 	
-	return false
-end
-function LegController.new(Character : Model, Configuration : any)
-	local self = setmetatable({}, LegController)
+	local torso = character.Torso :: BasePart
+	local hip = torso[side.. " Hip"] :: Motor6D
 	
-	self.Trove = Trove.new() --Creating a Trove OOP object for cleanup and management
-	
-	-- Important variables --
-	local Humanoid = Character:WaitForChild("Humanoid")
-	
-	local rootJoint = Humanoid.RootPart:WaitForChild("RootJoint")
-	local leftHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "LeftHip" or "Left Hip", true)
-	local rightHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "RightHip" or "Right Hip", true)
-	
-	self.States = {
-		["tiltingEnabled"] = false,
-		["ikEnabled"] = Configuration.ikEnabled
-	}
-	
-	local motor6D = {
-		rootJoint = rootJoint.C0,
-		Hips = {
-			["LeftHip"] = leftHip.C0,
-			["RightHip"] = rightHip.C0,
-		},
-	}
-	
-	local characterIK = nil
-	if Humanoid.RigType == Enum.HumanoidRigType.R6 then
-		characterIK = InverseKinematics.New(Character)
-	end
-	
-	-- Setting up raycast params for inverse kinematics --
-	local ikParams = RaycastParams.new()
-	ikParams.FilterType = Enum.RaycastFilterType.Exclude
-	ikParams.FilterDescendantsInstances = {Character}
-	for Index, exclusionObject in pairs(Configuration.ikExclude) do
-		table.insert(ikParams.FilterDescendantsInstances, exclusionObject)
-	end
-	
-	local ikParts = {}
-	for Index, CF in pairs(ikAttachments) do
-		local newAttachment = Instance.new("Attachment")
-		newAttachment.Name = Index
-		newAttachment.CFrame = CF
-		newAttachment.Parent = Humanoid.RootPart
-		
-		ikParts[newAttachment.Name] = newAttachment --Adding the newly created attachment to a table
-		self.Trove:Add(ikParts[newAttachment.Name])
-	end
-	
-	self.Trove:Connect(RunService.RenderStepped, function(deltaTime : number)
-		local normalizedDeltaTime = deltaTime * 60
-		
-		local rootVelocity = Vector3.new(1, 0, 1) * Humanoid.RootPart.Velocity
-		local directionalRightVelocity = Humanoid.RootPart.CFrame.RightVector:Dot(rootVelocity.unit)
-		
-		-- Inverse Kinematics --
-		local ikLeftC0, ikRightC0 = nil, nil
-		if characterIK and self.States.ikEnabled and not nilContentsExist(ikParts) and rootVelocity.Magnitude < Configuration.maxIkVelocity then
-			local leftDir = ikParts.leftFoot.WorldCFrame.Position - ikParts.leftHip.WorldCFrame.Position
-			local rightDir = ikParts.rightFoot.WorldCFrame.Position - ikParts.rightHip.WorldCFrame.Position
-			
-			local leftRay = workspace:Raycast(ikParts.leftHip.WorldCFrame.Position, leftDir, ikParams)
-			local rightRay = workspace:Raycast(ikParts.rightHip.WorldCFrame.Position, rightDir, ikParams)
-			
-			if leftRay and leftRay.Material ~= Enum.Material.Water and leftRay.Instance.CanCollide then
-				ikLeftC0 = characterIK:LegIK("Left", leftRay.Position)
-			end
-			if rightRay and rightRay.Material ~= Enum.Material.Water and rightRay.Instance.CanCollide then
-				ikRightC0 = characterIK:LegIK("Right", rightRay.Position)
-			end
-		end
-		
-		-- For angle calculation --
-		local canAngle = table.find(Configuration.onStates, Humanoid:GetState())
-		local notInverse = false
-		
-		local rootAngle = (self.States.tiltingEnabled and canAngle and rootVelocity.Magnitude > Configuration.activationVelocity and math.rad(directionalRightVelocity * Configuration.maxRootAngle) or 0)
-			* (notInverse and 1 or -1)
-		local legAngle = (self.States.tiltingEnabled and canAngle and rootVelocity.Magnitude > Configuration.activationVelocity and math.rad(directionalRightVelocity * Configuration.maxAngle) or 0)
-			* (notInverse and 1 or -1)
-		
-		-- Setting motor6D C0s --
-		local interpolationSpeed = Configuration.interploationSpeed.Speed * (rootVelocity.Magnitude < Configuration.interploationSpeed.highVelocityPoint and 2.8 or 1)
-		rootJoint.C0 = rootJoint.C0:Lerp(motor6D.rootJoint * CFrame.Angles(0, 0, rootAngle), interpolationSpeed * normalizedDeltaTime)
-		leftHip.C0 = leftHip.C0:Lerp(ikLeftC0 or motor6D.Hips.LeftHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
-		rightHip.C0 = rightHip.C0:Lerp(ikRightC0 or motor6D.Hips.RightHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
+	--[[
+		Keep resetting transform; why?
+		because otherwise the arms will be going crazy!
+	]]
+	self._TransformResetLoop = RunService.Stepped:Connect(function()
+		-- CFrame.identity is basically CFrame.new() but constant; therefore faster!
+		hip.Transform = CFrame.identity
 	end)
+	
+	self._Torso = torso
+	self._Hip = hip
+	
+	self._HipC0Cache = if side == "Left" then LEFT_HIP_CFRAME else RIGHT_HIP_CFRAME
 	
 	return self
 end
-function LegController:setState(stateString : string, Enabled : boolean)
-	if not self.States[stateString] then error("Invalid string") return end
-	
-	self.States[stateString] = Enabled
+function IKLeg:Solve(targetPosition: Vector3): ()
+	local offset = (self._Torso.CFrame * self._HipC0Cache):PointToObjectSpace(targetPosition)
+	local x, y = math.atan2(offset.Z, offset.Y), math.atan2(offset.X, offset.Y)
+	self._Hip.C0 = self._HipC0Cache * CFrame.Angles(x, 0, y) * CFRAME_ANGLES_PI
 end
-function LegController:Destroy()
-	self.Trove:Destroy()
+function IKLeg:Destroy(): ()
+	self._Hip.C0 = self._HipC0Cache
 	
-	table.clear(self)
-	setmetatable(self, nil)
-	return
+	self._TransformResetLoop:Disconnect()
 end
-return LegController
+return IKLeg
