@@ -28,7 +28,6 @@ function LegController.new(Character : Model, Configuration : any)
 	-- Important variables --
 	local Humanoid = Character:WaitForChild("Humanoid")
 	
-	local rootJoint = Humanoid.RootPart:WaitForChild("RootJoint")
 	local leftHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "LeftHip" or "Left Hip", true)
 	local rightHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "RightHip" or "Right Hip", true)
 	
@@ -38,7 +37,6 @@ function LegController.new(Character : Model, Configuration : any)
 	}
 	
 	local motor6D = {
-		rootJoint = rootJoint.C0,
 		Hips = {
 			["LeftHip"] = leftHip.C0,
 			["RightHip"] = rightHip.C0,
@@ -103,7 +101,6 @@ function LegController.new(Character : Model, Configuration : any)
 		
 		-- Setting motor6D C0s --
 		local interpolationSpeed = Configuration.interploationSpeed.Speed * (rootVelocity.Magnitude < Configuration.interploationSpeed.highVelocityPoint and 2.8 or 1)
-		rootJoint.C0 = rootJoint.C0:Lerp(motor6D.rootJoint * CFrame.Angles(0, 0, rootAngle), interpolationSpeed * normalizedDeltaTime)
 		leftHip.C0 = leftHip.C0:Lerp(ikLeftC0 or motor6D.Hips.LeftHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
 		rightHip.C0 = rightHip.C0:Lerp(ikRightC0 or motor6D.Hips.RightHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
 	end)
