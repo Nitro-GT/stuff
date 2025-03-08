@@ -1,210 +1,125 @@
-local function SolveArmIK(originCFF, targetPos, l1, l2, C1Off, Side : "Left" | "Right")	
-	-- build intial values for solving
-	local originCF
-	if Side == "Left" then
-		originCF = originCFF*CFrame.new(0,0,C1Off.X)
-	elseif Side == "Right" then
-		originCF = originCFF*CFrame.new(0,0,-C1Off.X)
+-- Services --
+local RunService = game:GetService("RunService")
+-- Modules / Direcotires --
+local InverseKinematics = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nitro-GT/stuff/refs/heads/main/ik2"))()
+local Trove = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nitro-GT/stuff/refs/heads/main/ik1"))()
+local LegController = {}
+LegController.__index = LegController
+local ikAttachments = {
+	["leftHip"] = CFrame.new(-0.466, -0.944, 0),
+	["leftFoot"] = CFrame.new(-0.5, -2.9, 0),
+	["rightHip"] = CFrame.new(0.5, -0.944, 0),
+	["rightFoot"] = CFrame.new(0.5, -2.9, 0)
+}
+local function nilContentsExist(Tbl : any)
+	for Index, Val in pairs(Tbl) do
+		if Val == nil then
+			return true
+		end
 	end
-	local localized = originCF:pointToObjectSpace(targetPos)
-	local localizedUnit = localized.unit
-	local l3 = localized.magnitude
-
-	-- build a "rolled" planeCF for a more natural arm look
-	local axis = Vector3.new(0, 0, -1):Cross(localizedUnit)
-	local angle = math.acos(-localizedUnit.Z)
-	local planeCF = originCF * CFrame.fromAxisAngle(axis, angle)
-
-	-- case: point is to close, unreachable
-	-- return: push back planeCF so the "hand" still reaches, angles fully compressed
-	if l3 < math.max(l2, l1) - math.min(l2, l1) then
-		return planeCF * CFrame.new(0, 0,  math.max(l2, l1) - math.min(l2, l1) - l3), -math.pi/2, math.pi
-
-		-- case: point is to far, unreachable
-		-- return: for forward planeCF so the "hand" still reaches, angles fully extended
-	elseif l3 > l1 + l2 then
-		return planeCF, math.pi/2, 0, l3
-
-		-- case: point is reachable
-		-- return: planeCF is fine, solve the angles of the triangle
-	else
-		local a1 = -math.acos((-(l2 * l2) + (l1 * l1) + (l3 * l3)) / (2 * l1 * l3))
-		local a2 = math.acos(((l2  * l2) - (l1 * l1) + (l3 * l3)) / (2 * l2 * l3))
-
-		return planeCF, a1 + math.pi/2, a2 - a1
-	end
+	
+	return false
 end
-
-local function SolveLegIK(originCFF, targetPos, l1, l2, C1Off)	
-	-- build intial values for solving
-	local originCF = originCFF*CFrame.new(-C1Off.X,0,0)
-	local localized = originCF:pointToObjectSpace(targetPos)
-	local localizedUnit = localized.unit
-	local l3 = localized.magnitude
-
-	-- build a "rolled" planeCF for a more natural arm look
-	local axis = Vector3.new(0, 0, -1):Cross(-localizedUnit)
-	local angle = math.acos(-localizedUnit.Z)
-	local planeCF = originCF * CFrame.fromAxisAngle(axis, angle):Inverse()
-
-	-- case: point is to close, unreachable
-	-- return: push back planeCF so the "hand" still reaches, angles fully compressed
-	if l3 < math.max(l2, l1) - math.min(l2, l1) then
-		return planeCF * CFrame.new(0, 0,  math.max(l2, l1) - math.min(l2, l1) - l3), -math.pi/2, math.pi
-
-		-- case: point is to far, unreachable
-		-- return: for forward planeCF so the "hand" still reaches, angles fully extended
-	elseif l3 > l1 + l2 then
-		return planeCF, math.pi/2, 0, l3
-
-		-- case: point is reachable
-		-- return: planeCF is fine, solve the angles of the triangle
-	else
-		local a1 = -math.acos((-(l2 * l2) + (l1 * l1) + (l3 * l3)) / (2 * l1 * l3))
-		local a2 = math.acos(((l2  * l2) - (l1 * l1) + (l3 * l3)) / (2 * l2 * l3))
-
-		return planeCF, math.pi/2-a1, -(a2 - a1)
-	end
-end
-
-local function WorldCFrameToC0ObjectSpace(motor6DJoint,worldCFrame)
-	local part1CF = motor6DJoint.Part1.CFrame
-	local part0 = motor6DJoint.Part0
-	local c1Store = motor6DJoint.C1
-	local c0Store = motor6DJoint.C0
-	local relativeToPart0 = part0.CFrame:inverse() * worldCFrame * c1Store
-
-	local goalC0CFrame = relativeToPart0
-
-	return goalC0CFrame
-end
-
-local R6IK = {}
-R6IK.__index = R6IK
-
-function R6IK.New(Character)
-	local self = {}
-	self.Torso = Character.Torso
-	self.HumanoidRootPart = Character.HumanoidRootPart
-	self.LeftArm = Character["Left Arm"]
-	self.RightArm = Character["Right Arm"]
-	self.LeftLeg = Character["Left Leg"]
-	self.RightLeg = Character["Right Leg"]
-
-	self.Motor6Ds = {
-		["Left Shoulder"] = self.Torso["Left Shoulder"],
-		["Right Shoulder"] = self.Torso["Right Shoulder"],
-		["Left Hip"] = self.Torso["Left Hip"],
-		["Right Hip"] = self.Torso["Right Hip"],
-		["RootJoint"] = self.HumanoidRootPart["RootJoint"]
-	}
-
-	self.C0s = {
-		["Left Shoulder"] = self.Motor6Ds["Left Shoulder"].C0,
-		["Right Shoulder"] = self.Motor6Ds["Right Shoulder"].C0,
-		["Left Hip"] = self.Motor6Ds["Left Hip"].C0,
-		["Right Hip"] = self.Motor6Ds["Right Hip"].C0,
-		["RootJoint"] = self.Motor6Ds["RootJoint"].C0
-	}
-
-	self.C1s = {
-		["Left Shoulder"] = self.Motor6Ds["Left Shoulder"].C1,
-		["Right Shoulder"] = self.Motor6Ds["Right Shoulder"].C1,
-		["Left Hip"] = self.Motor6Ds["Left Hip"].C1,
-		["Right Hip"] = self.Motor6Ds["Right Hip"].C1,
-		["RootJoint"] = self.Motor6Ds["RootJoint"].C1
-	}
-
-	self.Part0s = {
-		["Left Shoulder"] = self.Motor6Ds["Left Shoulder"].Part0,
-		["Right Shoulder"] = self.Motor6Ds["Right Shoulder"].Part0,
-		["Left Hip"] = self.Motor6Ds["Left Hip"].Part0,
-		["Right Hip"] = self.Motor6Ds["Right Hip"].Part0,
-		["RootJoint"] = self.Motor6Ds["RootJoint"].Part0
-	}
-
-	self.Part1s = {
-		["Left Shoulder"] = self.Motor6Ds["Left Shoulder"].Part1,
-		["Right Shoulder"] = self.Motor6Ds["Right Shoulder"].Part1,
-		["Left Hip"] = self.Motor6Ds["Left Hip"].Part1,
-		["Right Hip"] = self.Motor6Ds["Right Hip"].Part1,
-		["RootJoint"] = self.Motor6Ds["RootJoint"].Part1
+function LegController.new(Character : Model, Configuration : any)
+	local self = setmetatable({}, LegController)
+	
+	self.Trove = Trove.new() --Creating a Trove OOP object for cleanup and management
+	
+	-- Important variables --
+	local Humanoid = Character:WaitForChild("Humanoid")
+	
+	local rootJoint = Humanoid.RootPart:WaitForChild("RootJoint")
+	local leftHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "LeftHip" or "Left Hip", true)
+	local rightHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "RightHip" or "Right Hip", true)
+	
+	self.States = {
+		["tiltingEnabled"] = true,
+		["ikEnabled"] = Configuration.ikEnabled
 	}
 	
-	self.LeftUpperArmLength = 1
-	self.LeftLowerArmLength = 1
+	local motor6D = {
+		rootJoint = rootJoint.C0,
+		Hips = {
+			["LeftHip"] = leftHip.C0,
+			["RightHip"] = rightHip.C0,
+		},
+	}
 	
-	self.RightUpperArmLength = 1
-	self.RightLowerArmLength = 1
-	
-	self.LeftUpperLegLength = 1
-	self.LeftLowerLegLength = 1
-	
-	self.RightUpperLegLength = 1
-	self.RightLowerLegLength = 1
-	
-	self.TorsoIK = false
-	
-	return setmetatable(self, R6IK)
-end
-
-function R6IK:ArmIK(Side : "Left" | "Right", Position:Vector3)
-	if Side == "Left" then
-		local OriginCF = self.Torso.CFrame*self.C0s["Left Shoulder"]
-		local C1Off = self.C1s["Left Shoulder"]
-		local PlaneCF,ShoulderAngle,ElbowAngle, l3 = SolveArmIK(OriginCF, Position, self.LeftUpperArmLength, self.LeftLowerArmLength, C1Off, Side)
-
-		local ShoulderAngleCFrame, ElbowAngleCFrame = CFrame.Angles(ShoulderAngle, 0, 0), CFrame.Angles(ElbowAngle, 0, 0)
-
-		local ShoulderCF = PlaneCF * ShoulderAngleCFrame*CFrame.new(0,-self.LeftUpperArmLength * 0.5,0)
-		local ElbowCF = ShoulderCF*CFrame.new(0,-self.LeftUpperArmLength * 0.5,0)* ElbowAngleCFrame * CFrame.new(0, -self.LeftLowerArmLength*0.5, 0)*CFrame.new(0,(self.LeftArm.Size.Y-self.LeftLowerArmLength)*0.5,0)
-
-		return  WorldCFrameToC0ObjectSpace(self.Motor6Ds["Left Shoulder"], ElbowCF)
-	elseif Side == "Right" then
-		local OriginCF = self.Torso.CFrame*self.C0s["Right Shoulder"]
-		local C1Off = self.C1s["Right Shoulder"]
-		local PlaneCF,ShoulderAngle,ElbowAngle, l3 = SolveArmIK(OriginCF, Position, self.RightUpperArmLength, self.RightLowerArmLength, C1Off, Side)
-
-		local ShoulderAngleCFrame, ElbowAngleCFrame = CFrame.Angles(ShoulderAngle, 0, 0), CFrame.Angles(ElbowAngle, 0, 0)
-
-		local ShoulderCF = PlaneCF * ShoulderAngleCFrame*CFrame.new(0,-self.RightUpperArmLength * 0.5,0)
-		local ElbowCF = ShoulderCF*CFrame.new(0,-self.RightUpperArmLength * 0.5,0)* ElbowAngleCFrame * CFrame.new(0, -self.RightLowerArmLength*0.5, 0)*CFrame.new(0,(self.RightArm.Size.Y-self.RightLowerArmLength)*0.5,0)
-
-		return  WorldCFrameToC0ObjectSpace(self.Motor6Ds["Right Shoulder"], ElbowCF)
+	local characterIK = nil
+	if Humanoid.RigType == Enum.HumanoidRigType.R6 then
+		characterIK = InverseKinematics.New(Character)
 	end
-end
-
-function R6IK:LegIK(Side : "Left" | "Right", Position:Vector3)
-	if Side == "Left" then
-		local OriginCF = self.Torso.CFrame*self.C0s["Left Hip"]
-		local C1Off = self.C1s["Left Hip"]
-		local PlaneCF,ShoulderAngle,ElbowAngle, l3 = SolveLegIK(OriginCF*CFrame.Angles(0, math.pi/2, 0), Position, self.LeftUpperLegLength, self.LeftLowerLegLength, C1Off)
-
-		local HipAngleCFrame, KneeAngleCFrame = CFrame.Angles(math.clamp(ShoulderAngle,script:GetAttribute("lege"),script:GetAttribute("legs")), 0, 0), CFrame.Angles(math.clamp(ElbowAngle,script:GetAttribute("lege"),script:GetAttribute("legs")) , 0, 0)
-
-		
-		local HipCF = PlaneCF * HipAngleCFrame*CFrame.new(0,-self.LeftUpperLegLength * 0.5,0)
-		
-		local KneeCF = HipCF*CFrame.new(0,-self.LeftUpperLegLength * 0.5,0)* KneeAngleCFrame * CFrame.new(0, -self.LeftLowerLegLength*0.5, 0)*CFrame.new(0,(self.LeftLeg.Size.Y-self.LeftLowerLegLength)*0.5,0)
-
-
-		return WorldCFrameToC0ObjectSpace(self.Motor6Ds["Left Hip"], KneeCF)
-		 
-	elseif Side == "Right" then
-		local OriginCF = self.Torso.CFrame*self.C0s["Right Hip"]
-		local C1Off = self.C1s["Right Hip"]
-		local PlaneCF,ShoulderAngle,ElbowAngle, l3 = SolveLegIK(OriginCF*CFrame.Angles(0, -math.pi/2, 0), Position, self.RightUpperLegLength, self.RightLowerLegLength, C1Off)
-
-		local HipAngleCFrame, KneeAngleCFrame = CFrame.Angles(math.clamp(ShoulderAngle,script:GetAttribute("lege"),script:GetAttribute("legs")), 0, 0), CFrame.Angles(math.clamp(ElbowAngle,script:GetAttribute("lege"),script:GetAttribute("legs")) , 0, 0)
-
-		
-		local HipCF = PlaneCF * HipAngleCFrame*CFrame.new(0,-self.RightUpperLegLength * 0.5,0)
-		
-		local KneeCF = HipCF*CFrame.new(0,-self.RightUpperLegLength * 0.5,0)* KneeAngleCFrame * CFrame.new(0, -self.RightLowerLegLength*0.5, 0)*CFrame.new(0,(self.RightLeg.Size.Y-self.RightLowerLegLength)*0.5,0)
-		
-		
-		return WorldCFrameToC0ObjectSpace(self.Motor6Ds["Right Hip"], KneeCF)
+	
+	-- Setting up raycast params for inverse kinematics --
+	local ikParams = RaycastParams.new()
+	ikParams.FilterType = Enum.RaycastFilterType.Exclude
+	ikParams.FilterDescendantsInstances = {Character}
+	for Index, exclusionObject in pairs(Configuration.ikExclude) do
+		table.insert(ikParams.FilterDescendantsInstances, exclusionObject)
 	end
+	
+	local ikParts = {}
+	for Index, CF in pairs(ikAttachments) do
+		local newAttachment = Instance.new("Attachment")
+		newAttachment.Name = Index
+		newAttachment.CFrame = CF
+		newAttachment.Parent = Humanoid.RootPart
+		
+		ikParts[newAttachment.Name] = newAttachment --Adding the newly created attachment to a table
+		self.Trove:Add(ikParts[newAttachment.Name])
+	end
+	
+	self.Trove:Connect(RunService.RenderStepped, function(deltaTime : number)
+		local normalizedDeltaTime = deltaTime * 60
+		
+		local rootVelocity = Vector3.new(1, 0, 1) * Humanoid.RootPart.Velocity
+		local directionalRightVelocity = Humanoid.RootPart.CFrame.RightVector:Dot(rootVelocity.unit)
+		
+		-- Inverse Kinematics --
+		local ikLeftC0, ikRightC0 = nil, nil
+		if characterIK and self.States.ikEnabled and not nilContentsExist(ikParts) and rootVelocity.Magnitude < Configuration.maxIkVelocity then
+			local leftDir = ikParts.leftFoot.WorldCFrame.Position - ikParts.leftHip.WorldCFrame.Position
+			local rightDir = ikParts.rightFoot.WorldCFrame.Position - ikParts.rightHip.WorldCFrame.Position
+			
+			local leftRay = workspace:Raycast(ikParts.leftHip.WorldCFrame.Position, leftDir, ikParams)
+			local rightRay = workspace:Raycast(ikParts.rightHip.WorldCFrame.Position, rightDir, ikParams)
+			
+			if leftRay and leftRay.Material ~= Enum.Material.Water and leftRay.Instance.CanCollide then
+				ikLeftC0 = characterIK:LegIK("Left", leftRay.Position)
+			end
+			if rightRay and rightRay.Material ~= Enum.Material.Water and rightRay.Instance.CanCollide then
+				ikRightC0 = characterIK:LegIK("Right", rightRay.Position)
+			end
+		end
+		
+		-- For angle calculation --
+		local canAngle = table.find(Configuration.onStates, Humanoid:GetState())
+		local notInverse = Humanoid.RootPart.CFrame.LookVector:Dot(Humanoid.MoveDirection) < -0.1
+		
+		local rootAngle = (self.States.tiltingEnabled and canAngle and rootVelocity.Magnitude > Configuration.activationVelocity and math.rad(directionalRightVelocity * Configuration.maxRootAngle) or 0)
+			* (notInverse and 1 or -1)
+		local legAngle = (self.States.tiltingEnabled and canAngle and rootVelocity.Magnitude > Configuration.activationVelocity and math.rad(directionalRightVelocity * Configuration.maxAngle) or 0)
+			* (notInverse and 1 or -1)
+		
+		-- Setting motor6D C0s --
+		local interpolationSpeed = Configuration.interploationSpeed.Speed * (rootVelocity.Magnitude < Configuration.interploationSpeed.highVelocityPoint and 2.8 or 1)
+		rootJoint.C0 = rootJoint.C0:Lerp(motor6D.rootJoint * CFrame.Angles(0, 0, rootAngle), interpolationSpeed * normalizedDeltaTime)
+		leftHip.C0 = leftHip.C0:Lerp(ikLeftC0 or motor6D.Hips.LeftHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
+		rightHip.C0 = rightHip.C0:Lerp(ikRightC0 or motor6D.Hips.RightHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
+	end)
+	
+	return self
 end
-
-return R6IK
+function LegController:setState(stateString : string, Enabled : boolean)
+	if not self.States[stateString] then error("Invalid string") return end
+	
+	self.States[stateString] = Enabled
+end
+function LegController:Destroy()
+	self.Trove:Destroy()
+	
+	table.clear(self)
+	setmetatable(self, nil)
+	return
+end
+return LegController
