@@ -103,6 +103,7 @@ function LegController.new(Character : Model, Configuration : any)
 		
 		-- Setting motor6D C0s --
 		local interpolationSpeed = Configuration.interploationSpeed.Speed * (rootVelocity.Magnitude < Configuration.interploationSpeed.highVelocityPoint and 2.8 or 1)
+		rootJoint.C0 = rootJoint.C0:Lerp(motor6D.rootJoint * CFrame.Angles(0, 0, rootAngle), interpolationSpeed * normalizedDeltaTime)
 		leftHip.C0 = leftHip.C0:Lerp(ikLeftC0 or motor6D.Hips.LeftHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
 		rightHip.C0 = rightHip.C0:Lerp(ikRightC0 or motor6D.Hips.RightHip * CFrame.Angles(0, legAngle, 0), interpolationSpeed * normalizedDeltaTime)
 	end)
