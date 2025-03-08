@@ -33,7 +33,7 @@ function LegController.new(Character : Model, Configuration : any)
 	local rightHip = Character:FindFirstChild(Humanoid.RigType == Enum.HumanoidRigType.R15 and "RightHip" or "Right Hip", true)
 	
 	self.States = {
-		["tiltingEnabled"] = true,
+		["tiltingEnabled"] = false,
 		["ikEnabled"] = Configuration.ikEnabled
 	}
 	
