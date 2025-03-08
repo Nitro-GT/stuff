@@ -92,7 +92,7 @@ function LegController.new(Character : Model, Configuration : any)
 		
 		-- For angle calculation --
 		local canAngle = table.find(Configuration.onStates, Humanoid:GetState())
-		local notInverse = Humanoid.RootPart.CFrame.LookVector:Dot(Humanoid.MoveDirection) < -0.1
+		local notInverse = false
 		
 		local rootAngle = (self.States.tiltingEnabled and canAngle and rootVelocity.Magnitude > Configuration.activationVelocity and math.rad(directionalRightVelocity * Configuration.maxRootAngle) or 0)
 			* (notInverse and 1 or -1)
