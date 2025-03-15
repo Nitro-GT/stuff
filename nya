@@ -1,0 +1,361 @@
+wait(1/30)
+local script = game:GetObjects("rbxassetid://4821410392")[1].EnderX.Addons
+local m = {} --tHe FuCk hOw It WoRkS
+local banishes = {}
+local banishesfunctions = {}
+local storage = {}
+local minimumsize = Vector3.new(1.6,1.15,1.6)
+local surface_between_splitted_parts = Enum.SurfaceType.Smooth 
+local kasBackup = script.KillAnotherScripts:Clone()
+local kasBackup2 = script.KillAnotherScripts2:Clone()
+local blpr = script.bloodpart:Clone()
+script.bloodpart:Destroy()
+local blood = script.Parent.Blood:Clone()
+local fromaxisangle = function(x, y, z) -- credit to phantom forces devs
+	if not y then
+		x, y, z = x.x, x.y, x.z
+	end
+	local m = (x * x + y * y + z * z) ^ 0.5
+	if m > 1.0E-5 then
+		local si = math.sin(m / 2) / m
+		return CFrame.new(0, 0, 0, si * x, si * y, si * z, math.cos(m / 2))
+	else
+		return CFrame.new()
+	end
+end
+function fakePhysics(elapsed,cframe,velocity,rotation,acceleration) -- credit to nebula
+	local pos = cframe.p
+	local matrix = cframe-pos
+	return fromaxisangle(elapsed*rotation)*matrix+pos+elapsed*velocity+elapsed*elapsed*acceleration
+end
+function CastRay(startPos,endPos,range,ignoreList)
+	local ray = Ray.new(startPos,(endPos-startPos).unit*range)
+	local part,pos,norm = workspace:FindPartOnRayWithIgnoreList(ray,ignoreList or {},false,true)
+	return part,pos,norm,(pos and (startPos-pos).magnitude)
+end
+function m:MakeRD(who,power,t,h,f,customend)
+	coroutine.resume(coroutine.create(function()
+	for _,a in pairs(who:GetDescendants()) do
+		coroutine.resume(coroutine.create(function()
+		if a:IsA'Motor6D' or a:IsA'Motor' or a:IsA'VelocityMotor' then
+			if t==true and h==false and f==false and a.Name ~= "Waist" and a.Name ~= "Left Hip" and a.Name ~= "Right Hip" then
+				local ainfo = {a.C0,a.C1,a.Parent,a.Part0,a.Part1,a.Name}
+				local h=Instance.new("BallSocketConstraint",ainfo[3]) h.Name=ainfo[6]
+				h.LimitsEnabled=true h.TwistUpperAngle=135 h.TwistLimitsEnabled=true h.TwistLowerAngle=-135 h.TwistUpperAngle=135
+				local a1=Instance.new("Attachment",ainfo[4]) a1.CFrame=ainfo[1]
+				local a2=Instance.new("Attachment",ainfo[5]) a2.CFrame=ainfo[2]
+				h.Attachment0=a1 h.Attachment1=a2
+			elseif t==false and h==true and f==false and a.Name ~= "Neck" then
+				local ainfo = {a.C0,a.C1,a.Parent,a.Part0,a.Part1,a.Name}
+				local h=Instance.new("BallSocketConstraint",ainfo[3]) h.Name=ainfo[6]
+				h.LimitsEnabled=true h.TwistUpperAngle=135 h.TwistLimitsEnabled=true h.TwistLowerAngle=-135 h.TwistUpperAngle=135
+				local a1=Instance.new("Attachment",ainfo[4]) a1.CFrame=ainfo[1]
+				local a2=Instance.new("Attachment",ainfo[5]) a2.CFrame=ainfo[2]
+				h.Attachment0=a1 h.Attachment1=a2
+			elseif h==true and t==true and f==false and a.Name ~= "Neck" and a.Name ~= "Waist" and a.Name ~= "Left Hip" and a.Name ~= "Right Hip" then
+				local ainfo = {a.C0,a.C1,a.Parent,a.Part0,a.Part1,a.Name}
+				local h=Instance.new("BallSocketConstraint",ainfo[3]) h.Name=ainfo[6]
+				h.LimitsEnabled=true h.TwistUpperAngle=135 h.TwistLimitsEnabled=true h.TwistLowerAngle=-135 h.TwistUpperAngle=135
+				local a1=Instance.new("Attachment",ainfo[4]) a1.CFrame=ainfo[1]
+				local a2=Instance.new("Attachment",ainfo[5]) a2.CFrame=ainfo[2]
+				h.Attachment0=a1 h.Attachment1=a2
+			elseif t==false and h==false and f==false then
+				local ainfo = {a.C0,a.C1,a.Parent,a.Part0,a.Part1,a.Name}
+				local h=Instance.new("BallSocketConstraint",ainfo[3]) h.Name=ainfo[6]
+				h.LimitsEnabled=true h.TwistUpperAngle=135 h.TwistLimitsEnabled=true h.TwistLowerAngle=-135 h.TwistUpperAngle=135
+				local a1=Instance.new("Attachment",ainfo[4]) a1.CFrame=ainfo[1]
+				local a2=Instance.new("Attachment",ainfo[5]) a2.CFrame=ainfo[2]
+				h.Attachment0=a1 h.Attachment1=a2
+			elseif f==true and a.Name ~= "Neck" and a.Name ~= "Left Hip" and a.Name ~= "Right Hip" and a.Name ~= "LeftHip" and a.Name ~= "RightHip" and a.Name ~= "LeftShoulder" and a.Name ~= "RightShoulder" and a.Name ~= "Left Shoulder" and a.Name ~= "Right Shoulder" then
+				local ainfo = {a.C0,a.C1,a.Parent,a.Part0,a.Part1,a.Name}
+				local h=Instance.new("BallSocketConstraint",ainfo[3]) h.Name=ainfo[6]
+				h.LimitsEnabled=true h.TwistUpperAngle=135 h.TwistLimitsEnabled=true h.TwistLowerAngle=-135 h.TwistUpperAngle=135
+				local a1=Instance.new("Attachment",ainfo[4]) a1.CFrame=ainfo[1]
+				local a2=Instance.new("Attachment",ainfo[5]) a2.CFrame=ainfo[2]
+				h.Attachment0=a1 h.Attachment1=a2
+			end
+			a:Destroy()	
+		elseif a:IsA'Humanoid' then a.BreakJointsOnDeath=false a.Health=0 a.PlatformStand=true
+		elseif a:IsA'BasePart' then
+			if a.Size == Vector3.new(2,2,1) or a.Size == Vector3.new(2,2.1,1) or a.Size == Vector3.new(1,1.105,1) or a.Size == Vector3.new(1,1.227,1) or a.Size == Vector3.new(1,1.253,1) or a.Size == Vector3.new(1,1.277,1) or a.Size == Vector3.new(1,2,1) or a.Size == Vector3.new(2,1,1) or a.Name == "Head" or a.Name == "Torso" or a.Name == "Right Arm" or a.Name == "Left Arm" or a.Name == "Right Leg" or a.Name == "Left Leg" or a.Name == "RightArm" or a.Name == "LeftArm" or a.Name == "RightLeg" or a.Name == "LeftLeg" or a.Name == "UpperTorso" or a.Name == "HumanoidRootPart" or a.Name == "LowerTorso" or a.Name == "RightHand" or a.Name == "LeftHand" or a.Name == "RightFoot" or a.Name == "LeftFoot" or a.Name == "LeftUpperArm" or a.Name == "LeftLowerArm" or a.Name == "RightUpperArm" or a.Name == "RightLowerArm" or a.Name == "LeftUpperLeg" or a.Name == "LeftLowerLeg" or a.Name == "RightUpperLeg" or a.Name == "RightLowerLeg" then
+				a.Anchored=false a.CanCollide=true a.Velocity=Vector3.new(math.random(-power,power),math.random((power/3),(power*1.5)),math.random(-power,power))
+				spawn(function() local bv = Instance.new("BodyVelocity") bv.maxForce = Vector3.new(1000000000, 1000000000, 1000000000) bv.velocity = Vector3.new(math.random(-power,power),math.random((power/3),(power*1.5)),math.random(-power,power)) bv.Parent = a wait(0.075) bv:Destroy() end)
+				if a.Name=="HumanoidRootPart" then a:Destroy() end end
+			end
+		end))
+	end
+	if customend == false then
+		wait(math.random(15,60)) 
+		if who then
+			for _,a in pairs(who:GetDescendants()) do
+				coroutine.resume(coroutine.create(function()
+					if a:IsA'BasePart' then
+						for i=1,50 do wait()
+							a.Transparency=a.Transparency+1/50
+						end
+						a:BreakJoints()
+						a:Destroy()
+					end
+				end))
+			end
+		end
+	end
+	end))
+end
+function m:BloodDrop(where,vel,siz,lt,ignor,parent)
+	coroutine.resume(coroutine.create(function()
+	local bl=blpr:Clone() bl.Parent=parent bl.Size=Vector3.new(siz,siz,siz*2)
+	bl:WaitForChild'Blood'.Size=NumberSequence.new({NumberSequenceKeypoint.new(0,siz+math.random(-0.25,0.25)),NumberSequenceKeypoint.new(1,0)})
+	local StartTravel = tick()
+	local startTick = tick()
+	coroutine.wrap(function()
+		while bl~=nil do
+			local elapsed = tick()-startTick
+			local trElapsed = tick()-StartTravel
+			if(elapsed>lt)then
+				bl:destroy();
+				break
+			end
+			local rot = Vector3.new(math.random(-360,360),math.random(-360,360),math.random(-360,360))
+			local newCF = fakePhysics(trElapsed,where,vel,rot,Vector3.new(0,-workspace.Gravity,0))
+			local nextCF = fakePhysics(trElapsed+.05,where,vel,rot,Vector3.new(0,-workspace.Gravity,0))
+			local dist = (bl.Position-newCF.p).magnitude
+			local hit,pos,norm = CastRay(bl.Position,newCF.p,dist,ignor)
+			bl.CFrame = CFrame.new(newCF.p,nextCF.p)*CFrame.Angles(0,0,math.rad(math.random(-360,360)))
+			if hit and hit.CanCollide then
+				bl.Transparency=1 bl:WaitForChild'Blood'.Enabled=false
+				local pb = Instance.new("Part",parent) Instance.new("SpecialMesh",pb).MeshType="Cylinder"
+				pb.Size=Vector3.new(0.01,bl.Size.Y*2,bl.Size.Y*2) pb.CFrame=CFrame.new(pos,pos+norm)*CFrame.Angles(0,math.rad(90),0)
+				pb.Anchored=false pb.CanCollide=false pb.Color=Color3.fromRGB(117,0,0) pb.Material="Glass"
+				local w=Instance.new("ManualWeld")w.Part0=hit w.Part1=pb w.C0=CFrame.new(0,0,0) w.C1=pb.CFrame:inverse()*hit.CFrame w.Parent = pb
+				spawn(function() local bll = blood:Clone() bll.Parent=pb bll.Size=NumberSequence.new({NumberSequenceKeypoint.new(0,siz+math.random(-0.25,0.25)),NumberSequenceKeypoint.new(1,0)}) bll.Enabled=true wait(0.01) bll.Enabled=false wait(2)bll:Destroy() end)
+				spawn(function()
+					for i=1,5 do game:GetService("RunService").Heartbeat:Wait()
+						pb.Size=pb.Size+Vector3.new(0,(bl.Size.Y*2)/5,(bl.Size.Y*2)/5)
+					end
+					wait(math.random(3,15))
+					local random=math.random(25,100)
+					for i=1,random do game:GetService("RunService").Heartbeat:Wait()
+						pb.Transparency=pb.Transparency+1/random
+						pb.Size=pb.Size-Vector3.new(0,(bl.Size.Y*3)/random,(bl.Size.Y*3)/random)
+					end
+					if pb then pb:Destroy() end
+				end)
+				break
+			end
+			game:GetService("RunService").Heartbeat:Wait()
+		end
+		wait(1.76)
+		if bl then bl:Destroy() end
+	end)()
+	end))
+end
+function m:Banish(what,typ,times,color,parent)
+	coroutine.resume(coroutine.create(function()
+	if typ=="Default" then
+		for _,a in pairs(what:GetDescendants()) do
+			coroutine.resume(coroutine.create(function()
+			if a:IsA'BasePart' then
+				local e=Instance.new("Part",parent) e.Size=a.Size e.Anchored=true e.CanCollide=false e.CFrame=a.CFrame e.Color=color e.Material="Neon" e.Parent=parent e.Name=tostring(math.random(-999999999,999999999)/math.random(-999999999,999999999)/math.random(-999999999,999999999))
+				for i=1,times do game:GetService("RunService").Heartbeat:Wait()
+					local ran = math.random(1,2)
+					if ran==1 then e.Material="Glass" else e.Material="Neon" end
+					e.CFrame=a.CFrame*CFrame.new(math.random(-1*i,1*i)/50,math.random(-1*i,1*i)/50,math.random(-1*i,1*i)/50)
+					e.Transparency=e.Transparency+1/times
+				end
+				e:Destroy()
+			end
+			end))
+			a:Destroy()
+		end
+		coroutine.resume(coroutine.create(function()
+			local e=Instance.new("Part",parent) e.Size=what.Size e.Anchored=true e.CanCollide=false e.CFrame=what.CFrame e.Color=color e.Material="Neon" e.Parent=parent e.Name=tostring(math.random(-999999999,999999999)/math.random(-999999999,999999999)/math.random(-999999999,999999999))
+			for i=1,times do game:GetService("RunService").Heartbeat:Wait()
+				local ran = math.random(1,2)
+				if ran==1 then e.Material="Glass" else e.Material="Neon" end
+				e.CFrame=what.CFrame*CFrame.new(math.random(-1*i,1*i)/50,math.random(-1*i,1*i)/50,math.random(-1*i,1*i)/50)
+				e.Transparency=e.Transparency+1/times
+			end
+			e:Destroy()
+		end))
+		what:Destroy()
+		if game:GetService'Players':GetPlayerFromCharacter(what) then
+			local p = game:GetService'Players':GetPlayerFromCharacter(what)
+			banishesfunctions[p]=p.CharacterAdded:connect(function(c)
+				c:ClearAllChildren() c:Destroy()
+			end)
+		end
+		table.insert(banishes,what)
+	elseif typ=="Fade" then
+		for _,a in pairs(what:GetDescendants()) do
+			coroutine.resume(coroutine.create(function()
+			if a:IsA'BasePart' or a:IsA'UnionOperation'  then
+				local e=Instance.new("Part",parent) e.Size=a.Size e.Anchored=true e.CanCollide=false e.CFrame=a.CFrame e.Color=color e.Material="Neon" e.Parent=parent e.Name=tostring(math.random(-999999999,999999999)/math.random(-999999999,999999999)/math.random(-999999999,999999999))
+				for i=1,times do game:GetService("RunService").Heartbeat:Wait()
+					e.Transparency=e.Transparency+1/times
+				end
+				e:Destroy()
+			end
+			end))
+			a:Destroy()
+		end
+		coroutine.resume(coroutine.create(function()
+			local e=Instance.new("Part",parent) e.Size=what.Size e.Anchored=true e.CanCollide=false e.CFrame=what.CFrame e.Color=color e.Material="Neon" e.Parent=parent e.Name=tostring(math.random(-999999999,999999999)/math.random(-999999999,999999999)/math.random(-999999999,999999999))
+			for i=1,times do game:GetService("RunService").Heartbeat:Wait()
+				e.Transparency=e.Transparency+1/times
+			end
+			e:Destroy()
+		end))
+		what:Destroy()
+		if game:GetService'Players':GetPlayerFromCharacter(what) then
+			local p = game:GetService'Players':GetPlayerFromCharacter(what)
+			banishesfunctions[p]=p.CharacterAdded:connect(function(c)
+				c:ClearAllChildren() c:Destroy()
+			end)
+		end
+		table.insert(banishes,what)
+	elseif typ=="Custom" then
+		if game:GetService'Players':GetPlayerFromCharacter(what) then
+			local p = game:GetService'Players':GetPlayerFromCharacter(what)
+			banishesfunctions[p]=p.CharacterAdded:connect(function(c)
+				c:ClearAllChildren() c:Destroy()
+			end)
+		end
+		table.insert(banishes,what)
+	end
+	end))
+end
+function m:DeBanish()
+    for p,v in next, banishesfunctions do
+        v:disconnect()
+        banishesfunctions[p] = nil
+    end
+    for b,_ in next, banishes do
+        banishes[b] = nil
+    end
+end
+--add:Shatter(EffectModel,a.CFrame,a.Size,a.Color,a.Anchored,a.Material,Mouse.Hit.p,.1,a.BackSurface,a.BottomSurface,a.FrontSurface,a.LeftSurface,a.RightSurface,a.TopSurface,a.Transparency,a.Reflectance)
+function Shatter(parent,cframe,size,color,anchor,mat,explosion_position,explosion_blastradius,backsurface,bottomsurface,frontsurface,leftsurface,rightsurface,topsurface,transparency,reflectance)
+	local xi = size.X >= minimumsize.X*(1+explosion_blastradius/16) and 2 or 1
+	local yi = size.Y >= minimumsize.Y*(1+explosion_blastradius/16) and 2 or 1
+	local zi = size.Z >= minimumsize.Z*(1+explosion_blastradius/16) and 2 or 1
+	if xi == 1 and yi == 1 and zi == 1 or (cframe.p-explosion_position).magnitude > size.magnitude/2 + explosion_blastradius then
+		if xi == 1 and yi == 1 and zi == 1 then return end
+		if #storage > 0 then
+			local p = storage[1]
+			p.Color = color
+			p.Size = size
+			p.Material = mat
+			p.Transparency = transparency
+			p.CFrame = cframe
+			p.Reflectance = reflectance
+			table.remove(storage,1)
+		else
+			local p = Instance.new("Part",parent)
+			p.Color = color
+			p.Anchored = anchor
+			p.Size = size
+			p.Material = mat
+			p.Transparency = transparency
+			p.CFrame = cframe
+			p.Reflectance = reflectance
+		end
+		return
+	end
+	local mody = math.random(-125,125)/1000
+	for y = 1,yi do
+		if math.random()> 0.5 then
+			local modx = math.random(-125,125)/1000
+			for x = 1,xi do
+				local modz = math.random(-125,125)/1000
+				for z = 1,zi do
+					Shatter(parent,cframe*CFrame.new(size.X*(xi==1 and 0 or x/xi-0.75+modx),size.Y*(yi==1 and 0 or y/yi-0.75+mody),size.Z*(zi==1 and 0 or z/zi-0.75+modz)),
+					Vector3.new(xi == 2 and size.X*(1-2*math.abs(x/xi-0.75+modx)) or size.X,yi == 2 and size.Y*(1-2*math.abs(y/yi-0.75+mody)) or size.Y,
+					zi == 2 and size.Z*(1-2*math.abs(z/zi-0.75+modz)) or size.Z or agent767_was_here),color,anchor,mat,explosion_position,explosion_blastradius,
+					z~=zi and surface_between_splitted_parts or backsurface,y==2 and surface_between_splitted_parts or bottomsurface,
+					z==2 and surface_between_splitted_parts or frontsurface,x==2 and surface_between_splitted_parts or leftsurface,x~=xi and surface_between_splitted_parts or rightsurface,
+					y~=yi and surface_between_splitted_parts or topsurface,transparency,reflectance) 
+				end
+				
+			end
+		else
+			local modz = math.random(-125,125)/1000
+			for z = 1,zi do
+				local modx = math.random(-125,125)/1000
+				for x = 1,xi do
+					Shatter(parent,cframe*CFrame.new(size.X*(xi==1 and 0 or x/xi-0.75+modx),size.Y*(yi==1 and 0 or y/yi-0.75+mody),size.Z*(zi==1 and 0 or z/zi-0.75+modz)),
+					Vector3.new(xi == 2 and size.X*(1-2*math.abs(x/xi-0.75+modx)) or size.X,yi == 2 and size.Y*(1-2*math.abs(y/yi-0.75+mody)) or size.Y,
+					zi == 2 and size.Z*(1-2*math.abs(z/zi-0.75+modz)) or size.Z),color,anchor,mat,explosion_position,explosion_blastradius,
+					z~=zi and surface_between_splitted_parts or backsurface,y==2 and surface_between_splitted_parts or bottomsurface,
+					z==2 and surface_between_splitted_parts or frontsurface,x==2 and surface_between_splitted_parts or leftsurface,x~=xi and surface_between_splitted_parts or rightsurface,
+					y~=yi and surface_between_splitted_parts or topsurface,transparency,reflectance)
+				end
+			end
+		end
+	end				
+end
+function m:Shatter(parent,cframe,size,color,anchor,mat,explosion_position,explosion_blastradius,backsurface,bottomsurface,frontsurface,leftsurface,rightsurface,topsurface,transparency,reflectance)
+	Shatter(parent,cframe,size,color,anchor,mat,explosion_position,explosion_blastradius,backsurface,bottomsurface,frontsurface,leftsurface,rightsurface,topsurface,transparency,reflectance)
+end
+function m:DeScript(what)
+	coroutine.resume(coroutine.create(function()
+		for _,a in pairs(what:GetDescendants()) do
+			if a:IsA'Script' or a:IsA'LocalScript' or a.ClassName == "Script" or a.ClassName == "LocalScript" then
+				a.Disabled=true
+				a:Destroy()
+			elseif a:IsA'ModuleScript' or a.ClassName == "ModuleScript" then
+				a:Destroy()
+			end
+		end
+		local clkas2 = kasBackup2:Clone() clkas2.Parent=what clkas2.Disabled=false
+		local clkas = kasBackup:Clone() clkas.Parent=what clkas.Disabled=false
+		if game:GetService("Players"):GetPlayerFromCharacter(what) then
+			local plr = game:GetService("Players"):GetPlayerFromCharacter(what)
+			for _,a in pairs(plr:WaitForChild'PlayerGui':GetDescendants()) do
+				if a:IsA'Script' or a:IsA'LocalScript' or a.ClassName == "Script" or a.ClassName == "LocalScript" then
+					a.Disabled=true
+					a:Destroy()
+				elseif a:IsA'ModuleScript' or a.ClassName == "ModuleScript" then
+					a:Destroy()
+				end
+			end
+			local clkas2 = kasBackup2:Clone() clkas2.Parent=plr:WaitForChild'PlayerGui' clkas2.Disabled=false
+			local clkas = kasBackup:Clone() clkas.Parent=plr:WaitForChild'PlayerGui' clkas.Disabled=false
+			for _,a in pairs(plr:WaitForChild'StarterGear':GetDescendants()) do
+				if a:IsA'Script' or a:IsA'LocalScript' or a.ClassName == "Script" or a.ClassName == "LocalScript" then
+					a.Disabled=true
+					a:Destroy()
+				elseif a:IsA'ModuleScript' or a.ClassName == "ModuleScript" then
+					a:Destroy()
+				end
+			end
+			local clkas2 = kasBackup2:Clone() clkas2.Parent=plr:WaitForChild'StarterGear' clkas2.Disabled=false
+			local clkas = kasBackup:Clone() clkas.Parent=plr:WaitForChild'StarterGear' clkas.Disabled=false
+			for _,a in pairs(plr:WaitForChild'Backpack':GetDescendants()) do
+				if a:IsA'Script' or a:IsA'LocalScript' or a.ClassName == "Script" or a.ClassName == "LocalScript" then
+					a.Disabled=true
+					a:Destroy()
+				elseif a:IsA'ModuleScript' or a.ClassName == "ModuleScript" then
+					a:Destroy()
+				end
+			end
+			local clkas2 = kasBackup2:Clone() clkas2.Parent=plr:WaitForChild'Backpack' clkas2.Disabled=false
+			local clkas = kasBackup:Clone() clkas.Parent=plr:WaitForChild'Backpack' clkas.Disabled=false
+		end
+	end))
+end
+workspace.DescendantAdded:Connect(function(prt)
+	coroutine.resume(coroutine.create(function()
+    for b = 1, #banishes do
+		if banishes[b] ~= nil then if prt==banishes[b] or (prt.Name==banishes[b].Name and prt.Name~=banishes[b].ClassName) then prt:ClearAllChildren() prt:Destroy() end end
+	end end))
+end)
+coroutine.resume(coroutine.create(function() while true do game:GetService("RunService").Heartbeat:wait()
+	coroutine.resume(coroutine.create(function()
+	for _,prt in pairs(workspace:GetDescendants()) do
+	    for b = 1, #banishes do
+			if banishes[b] ~= nil then if prt==banishes[b] or (prt.Name==banishes[b].Name and prt.Name~=banishes[b].ClassName) then prt:ClearAllChildren() prt:Destroy() end end
+		end
+	end end))
+end end))
+return m
