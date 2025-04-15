@@ -1,5 +1,5 @@
 local getsynasset = getcustomasset
-local script = game:GetObjects("rbxassetid://8403394444")[1]
+local script = game:GetObjects("rbxassetid://7715204686")[1]["SBV4 Fixed"].Script.Holder.LocalScript
 _G.SBV4R = true
 game:GetService("RunService").RenderStepped:Wait()
 MRANDOM = math.random
